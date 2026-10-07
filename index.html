@@ -96,6 +96,7 @@ select.chip{color:var(--text)}
 .adbar{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,.75);color:#fff;font-size:14px}
 .adbar .chip:disabled{opacity:.45;cursor:not-allowed}
 #admb .search{width:100%;margin:6px 0;border-radius:12px;display:block}#admb h3{margin:18px 0 4px}#admb code{background:var(--bg2);padding:1px 6px;border-radius:6px}#admb .chip{margin:4px 4px 4px 0}
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -407,9 +408,10 @@ async function loadAL(){
 }
 $("#more").onclick=loadAL;
 setLang(ld("lang",'""')||(navigator.language||"ar").slice(0,2));
-document.documentElement.dataset.theme=ld("theme",'"dark"');labels();route();
+document.documentElement.dataset.theme=ld("theme",'"dark"');labels();
 if("serviceWorker"in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
 if(CFG.plausible){const sc=document.createElement("script");sc.defer=true;sc.dataset.domain=CFG.plausible;sc.src="https://plausible.io/js/script.js";document.head.append(sc)}
+window.addEventListener("hashchange",route);
 loadCatalog().then(()=>loadAL());
 </script>
 </body>
