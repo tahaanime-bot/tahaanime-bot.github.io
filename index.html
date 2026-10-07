@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="أنيفوريا: موقع عربي لتصفح الأنمي ومشاهدة الحلقات، مع بحث وتصنيفات ووصف مختصر لكل عمل. متاح لجميع الدول.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="محمد طه براجح">
+<meta name="copyright" content="© 2026 محمد طه براجح">
+<meta property="og:type" content="website">
+<meta property="og:title" content="أنيفوريا — شاهد الأنمي">
+<meta property="og:description" content="تصفح الأنمي وشاهد حلقاتك بالعربية من أي مكان في العالم.">
+<meta property="og:locale" content="ar">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2b0b16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='13' fill='%23ff7aa8'/%3E%3Cpath d='M19 14l15 10-15 10z' fill='white'/%3E%3C/svg%3E">
+<title>أنيفوريا — شاهد الأنمي</title>
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#2b0b16;--bg2:#0c0a14;--bg3:#1c0c35;--card:#2a1622;--line:#43283a;--text:#f6eef2;--mute:#b6a2ae;--red:#e11d48;--teal:#3fdccb;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg2)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;color:var(--text);font-family:"Tajawal",Tahoma,sans-serif;line-height:1.6;background:linear-gradient(180deg,var(--bg1),var(--bg2) 45%,var(--bg3)) fixed;padding-bottom:84px}
+button{font:inherit;color:inherit}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;gap:8px;padding:12px 14px;background:color-mix(in srgb,var(--bg2) 88%,transparent);backdrop-filter:blur(8px)}
+header .sp{flex:1}
+header h1{font-size:19px;font-weight:700;margin:0}
+.ic{background:none;border:0;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.v{display:none}.v.on{display:block}
+.hero{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 16px 6px;scrollbar-width:none}
+.hero::-webkit-scrollbar,.row::-webkit-scrollbar,.chips::-webkit-scrollbar{display:none}
+.slide{flex:none;width:86%;aspect-ratio:16/10;border-radius:24px;scroll-snap-align:center;position:relative;cursor:pointer;box-shadow:0 0 26px rgba(225,29,72,.28);overflow:hidden}
+.slide div{position:absolute;inset:auto 0 0 0;padding:44px 20px 16px;background:linear-gradient(transparent,rgba(0,0,0,.78))}
+.slide h2{font-size:24px;margin:0;font-weight:700}
+.pg{display:flex;justify-content:center;gap:8px;margin:12px 0 0}
+.pg i{width:12px;height:12px;border-radius:8px;background:#5a4a55;transition:width .2s}
+.pg i.on{width:44px;background:var(--red)}
+.sec{margin-top:24px}
+.sh{display:flex;justify-content:space-between;align-items:baseline;padding:0 16px 10px}
+.sh h3{font-size:18px;margin:0;font-weight:700}
+.sh button{background:none;border:0;color:var(--mute);cursor:pointer}
+.row{display:flex;gap:12px;overflow-x:auto;padding:0 16px 4px;scrollbar-width:none}
+.c{flex:none;width:150px;cursor:pointer;background:var(--card);border-radius:16px;overflow:hidden;padding-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;padding:8px 16px}
+.grid .c{width:auto}
+.c .p{aspect-ratio:2/3;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-family:"Reem Kufi",sans-serif;font-size:21px;line-height:1.25;text-shadow:0 2px 8px rgba(0,0,0,.45)}
+.c b{display:block;padding:10px 12px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.c small{display:block;padding:0 12px;color:#ffcc4d}
+.bd{position:absolute;top:8px;inset-inline-start:8px;border-radius:10px;padding:1px 10px;font-size:13px;font-weight:700;font-family:"Tajawal",sans-serif;text-shadow:none}
+.bd.done{background:var(--red)}.bd.live{background:#1f9d6b}
+.yr{position:absolute;bottom:8px;inset-inline:8px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.6);border-radius:12px;padding:2px 10px;font-size:13px;font-family:"Tajawal",sans-serif;text-shadow:none}
+.yr i{font-style:normal;font-size:18px;padding:0 4px}
+.gg{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 16px}
+.g{height:92px;border-radius:22px;padding:14px;font-weight:700;font-size:18px;position:relative;overflow:hidden;color:#fff;cursor:pointer;border:0;text-align:start}
+.g::after{content:"";position:absolute;inset-inline-end:-18px;bottom:-26px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.25)}
+.cw{flex:none;width:290px;display:flex;gap:12px;background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer}
+.cp{width:96px;min-height:120px}
+.ci{flex:1;padding:12px 0;padding-inline-end:14px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.ci b{font-size:20px}.ci span{color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar{height:5px;background:#4a3342;border-radius:4px;margin:10px 0 4px}.bar i{display:block;height:100%;background:var(--red);border-radius:4px}
+.search{display:block;width:calc(100% - 32px);margin:10px 16px;background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:10px 18px;font:inherit}
+.search:focus,button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:0 16px 6px;scrollbar-width:none}
+.chip{flex:none;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 15px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--red);border-color:var(--red)}
+.empty{color:var(--mute);text-align:center;padding:48px 16px}
+.me{text-align:center;padding:30px 16px;color:var(--mute)}
+.me h2{color:var(--text);font-family:"Reem Kufi",sans-serif;font-size:30px;margin:10px 0}
+.me .search{width:100%;max-width:280px;margin:14px auto}
+nav{position:fixed;inset-inline:0;bottom:0;z-index:6;display:flex;justify-content:space-around;padding:10px 12px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));background:linear-gradient(90deg,#3a0f1f,#1f0d3d)}
+nav button{background:none;border:0;color:var(--mute);width:64px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+nav button.on{background:rgba(255,255,255,.15);color:#fff}
+dialog{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:18px;padding:0;width:min(780px,94vw);max-height:92vh;overflow:auto}
+dialog::backdrop{background:rgba(8,5,18,.75)}
+.dhead{display:flex;justify-content:space-between;align-items:start;gap:10px;padding:16px 18px 6px}
+.dhead h2{margin:0;font-family:"Reem Kufi",sans-serif}
+.x{background:none;border:1px solid var(--line);border-radius:8px;padding:2px 10px;cursor:pointer}
+.player{margin:8px 18px;background:#000;border-radius:12px;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;color:#cfc8e6;text-align:center;overflow:hidden}
+.player video{width:100%;height:100%}.player p{padding:16px;margin:0}
+.desc{padding:4px 18px;color:var(--mute)}
+.eps{display:flex;flex-wrap:wrap;gap:8px;padding:10px 18px 20px}
+.ep{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:4px 12px;cursor:pointer}
+.ep[aria-current="true"]{border-color:var(--teal);color:var(--teal)}.ep.seen::after{content:" ✓";color:var(--teal)}
+:root[data-theme="light"]{--bg1:#ffe3ea;--bg2:#fbf6fa;--bg3:#ece3ff;--card:#fff;--line:#e6d3dd;--text:#2a1622;--mute:#7b6674;color-scheme:light}
+.qr{display:flex;align-items:center;gap:8px;padding-inline-end:16px}.qr .search{flex:1;width:auto}
+.grid.list{grid-template-columns:1fr}.grid.list .c{display:grid;grid-template-columns:84px 1fr;align-items:center;padding:0}.grid.list .p{grid-row:1/3}.grid.list .c b{padding-top:0}
+.pc{display:flex;gap:8px;flex-wrap:wrap;padding:0 18px 6px;align-items:center}
+.rt{display:flex;align-items:center;gap:2px;padding:4px 18px;color:var(--mute)}.rt button{background:none;border:0;font-size:24px;color:#ffb81c;cursor:pointer;padding:0 2px}.rt span{margin-inline-end:8px}
+.legal{text-align:start;max-width:520px;margin:14px auto}.legal details{background:var(--card);border-radius:12px;margin:8px 0;padding:10px 14px}.legal summary{cursor:pointer;color:var(--text)}
+select.chip{color:var(--text)}
+.adbox{width:100%;height:100%;position:relative;display:flex;flex-direction:column;background:#111}
+.adbox video,.adbox img,.adbox iframe{flex:1;min-height:0;width:100%;object-fit:contain;border:0;background:#000}
+.adbox a{flex:1;min-height:0;display:flex}
+.adh{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,#5b3df5,#ff7aa8);color:#fff;padding:12px;font-size:14px}.adh b{font-size:22px;font-family:"Reem Kufi",sans-serif}
+.adtag{position:absolute;top:8px;inset-inline-start:8px;background:rgba(0,0,0,.65);color:#fff;padding:0 8px;border-radius:6px;font-size:12px;z-index:1}
+.adbar{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,.75);color:#fff;font-size:14px}
+.adbar .chip:disabled{opacity:.45;cursor:not-allowed}
+#admb .search{width:100%;margin:6px 0;border-radius:12px;display:block}#admb h3{margin:18px 0 4px}#admb code{background:var(--bg2);padding:1px 6px;border-radius:6px}#admb .chip{margin:4px 4px 4px 0}
+</style>
+</head>
+<body>
+<header class="top"><button class="ic" id="sbtn" aria-label="Search"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button><span class="sp"></span><h1 id="tt"></h1><button class="ic" id="mbtn" aria-label="Menu"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h16"/></svg></button></header>
+<main>
+<section class="v on" id="v-home"><div class="hero" id="hero"></div><div class="pg" id="pg"></div><div id="home"></div></section>
+<section class="v" id="v-lib"><div class="qr"><input class="search" id="q" type="search" aria-label="Search"><button class="chip" id="vt" aria-label="View">▦</button></div><div class="chips" id="chips"></div><div class="grid" id="grid"></div><p style="text-align:center"><button class="chip" id="more" hidden>＋ 50</button></p></section>
+<section class="v" id="v-saved"><div class="grid" id="sgrid"></div></section>
+<section class="v me" id="v-me"><svg width="96" height="96" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="lg96" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7aa8"/><stop offset="1" stop-color="#5b3df5"/></linearGradient></defs><rect width="48" height="48" rx="13" fill="url(#lg96)"/><path d="M19 14l15 10-15 10z" fill="#fff"/><circle cx="36" cy="12" r="3.2" fill="#3fdccb"/></svg><h2>أنيفوريا</h2><select class="search" id="lang" aria-label="Language"></select><button class="chip" id="theme"></button><div class="legal" id="legal"></div><p>© 2026 محمد طه براجح (Mohamed Taha Brajeh)</p><p id="credit" hidden>Data: <a href="https://anilist.co" rel="noopener" style="color:inherit">AniList</a></p></section>
+</main>
+<nav>
+<button data-t="home" class="on" aria-label="Home"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg></button>
+<button data-t="saved" aria-label="Saved"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v16l-5-3.5L7 20z"/></svg></button>
+<button data-t="lib" aria-label="Library"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9"/></svg></button>
+<button data-t="me" aria-label="Me"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="lg28" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7aa8"/><stop offset="1" stop-color="#5b3df5"/></linearGradient></defs><rect width="48" height="48" rx="13" fill="url(#lg28)"/><path d="M19 14l15 10-15 10z" fill="#fff"/><circle cx="36" cy="12" r="3.2" fill="#3fdccb"/></svg></button>
+</nav>
+<dialog id="dlg">
+  <div class="dhead"><div><h2 id="dt"></h2><span id="dm" style="color:var(--mute)"></span></div><button class="x" id="close"></button></div>
+  <div class="player" id="player"></div>
+  <div class="pc"><button class="chip" id="skip"></button><button class="chip" id="nx"></button><select class="chip" id="spd" aria-label="Speed"><option>0.75</option><option selected>1</option><option>1.25</option><option>1.5</option><option>2</option></select><button class="chip" id="vad"></button><small id="adinfo" style="color:var(--mute)"></small></div><p class="desc" id="dd"></p><div class="rt" id="rt"></div>
+  <div class="eps" id="eps"></div>
+</dialog>
+<dialog id="adm"><div class="dhead"><h2>لوحة الإدارة</h2><button class="x" id="admx">إغلاق</button></div><div id="admb" style="padding:0 18px 20px"></div></dialog>
+<script>
+/* قائمة الأنمي: العنوان|السنة|التصنيفات|عدد الحلقات (تقريبي)|الوصف */
+const RAW=`هجوم العمالقة|2013|أكشن،دراما،خيال|87|البشرية محاصرة خلف أسوار تحميها من عمالقة يأكلون البشر، وشاب يقسم أن ينتقم.
+ناروتو|2002|أكشن،مغامرة|220|فتى نينجا منبوذ يحلم بأن يصبح زعيم قريته ويكسب احترام الجميع.
+ون بيس|1999|مغامرة،كوميدي|1100|قرصان شاب يبحر مع طاقمه بحثاً عن الكنز الأعظم ليصير ملك القراصنة.
+ديث نوت|2006|غموض،إثارة|37|طالب يعثر على دفتر يقتل من يُكتب اسمه فيه، ومحقق عبقري يطارده.
+فول ميتال ألكيميست: الأخوة|2009|مغامرة،خيال|64|أخوان يبحثان عن حجر الفيلسوف ليستعيدا ما فقداه بالكيمياء.
+دراغون بول زد|1989|أكشن،مغامرة|291|غوكو وأصدقاؤه يدافعون عن الأرض من أعداء قادمين من الفضاء.
+قاتل الشياطين|2019|أكشن،خيال|26|فتى يصبح صائد شياطين لينقذ أخته التي تحوّلت إلى شيطانة.
+جوجتسو كايسن|2020|أكشن،خيال|47|طالب يبتلع لعنة قوية ويلتحق بمدرسة تدرّب السحرة على محاربة اللعنات.
+بليتش|2004|أكشن،خيال|366|مراهق يكتسب قوى حاصد الأرواح ويحمي الأحياء من الأرواح الشريرة.
+هنتر × هنتر|2011|مغامرة،أكشن|148|فتى يصبح صياداً محترفاً بحثاً عن والده، ويخوض اختبارات خطيرة.
+المدينة المفقودة (سبيريتد أواي)|2001|فيلم،خيال|1|فتاة تضيع في عالم أرواح غريب وعليها إنقاذ والديها.
+طوكيو غول|2014|أكشن،رعب|12|طالب جامعي يتحول إلى نصف غول ويعيش بين عالمين متصارعين.
+سورد آرت أونلاين|2012|مغامرة،خيال علمي|25|لاعبون عالقون في لعبة واقع افتراضي، والموت فيها يعني الموت حقيقة.
+أكاديمية بطلي|2016|أكشن،مدرسي|159|فتى بلا قدرات في عالم الأبطال الخارقين يرث قوة أعظم بطل.
+ون بنش مان|2015|أكشن،كوميدي|24|بطل يهزم أي عدو بلكمة واحدة، لكنه يعاني من ملل القوة المطلقة.
+موب سايكو 100|2016|كوميدي،خيال|37|فتى يملك قوى نفسية هائلة ويحاول أن يعيش حياة عادية.
+كود جياس|2006|خيال علمي،دراما|50|أمير منفي يحصل على قوة الأمر ويقود ثورة ضد إمبراطورية قوية.
+شتاينز؛ غيت|2011|خيال علمي،إثارة|24|مجموعة أصدقاء تكتشف طريقة لإرسال رسائل إلى الماضي وتواجه عواقبها.
+فيوليت إيفرغاردن|2018|دراما،رومانسي|13|جندية سابقة تعمل كاتبة رسائل وتتعلم معنى المشاعر عبر كلمات الآخرين.
+كاوبوي بيبوب|1998|خيال علمي،أكشن|26|صيادو جوائز يجوبون المجموعة الشمسية هرباً من ماضيهم.
+نيون جينيسس إيفانجيليون|1995|خيال علمي،دراما|26|مراهقون يقودون روبوتات عملاقة لمحاربة كائنات غامضة تهدد الأرض.
+فيري تيل|2009|مغامرة،كوميدي|328|سحرة نقابة مشاغبة يخوضون مهمات ويحمون بعضهم كعائلة واحدة.
+رجل المنشار|2022|أكشن،رعب|12|شاب غارق في الديون يندمج مع شيطان كلب ويعمل صائد شياطين.
+عائلة الجاسوس|2022|كوميدي،أكشن|37|جاسوس وقاتلة وطفلة قارئة أفكار يتظاهرون بأنهم عائلة عادية.
+اسمك (كيمي نو نا وا)|2016|فيلم،رومانسي|1|مراهقان يتبادلان جسديهما في الأحلام ويحاولان لقاء بعضهما.
+قلعة هاول المتحركة|2004|فيلم،خيال|1|شابة تتحول إلى عجوز بلعنة ساحرة، وتلجأ إلى قلعة ساحر متنقلة.
+يوري على الجليد|2016|رياضة،دراما|12|متزلج على الجليد يفقد ثقته ثم يتدرب على يد بطل عالمي.
+هايكيو!!|2014|رياضة،مدرسي|85|فتى قصير القامة يحلم بالتألق في الكرة الطائرة مع فريق مدرسته.
+فريرن|2023|مغامرة،خيال|28|ساحرة تسافر بعد رحيل بطل الأسطورة لتفهم ذكرياتها معه.
+سولو ليفلينغ|2024|أكشن،مغامرة|25|أضعف صائد وحوش يحصل على قدرة فريدة تجعله يتطور دون حدود.`;
+/* روابط الفيديو (للأنمي المحمّل من AniList استخدم المفتاح "a<رقم AniList>:<رقم الحلقة>"): ضع رابط الحلقة بصيغة "رقم الأنمي:رقم الحلقة" (رقم الأنمي حسب ترتيبه في القائمة من 1). */
+const VIDEOS={/* "1:1":"https://example.com/ep1.mp4" */};
+/* صور الأغلفة: "رقم الأنمي":"رابط الصورة" (صور تملك حق استخدامها). بدونها يظهر غلاف ملوّن. */
+const IMAGES={/* "1":"https://example.com/poster1.jpg" */};
+const ANIME=RAW.split("\n").map((l,i)=>{const [title,year,g,n,desc]=l.split("|");
+ return {id:i+1,title,year:+year,genre:g.split("،"),desc,c:[`hsl(${(i*47)%360} 80% 62%)`,`hsl(${(i*47+70)%360} 60% 28%)`],
+ eps:Array.from({length:+n},(_,k)=>({n:k+1,url:VIDEOS[(i+1)+":"+(k+1)]||""}))}});
+
+const $=s=>document.querySelector(s);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LANGS=`ar|العربية|كل أنميك في مكان واحد|ابحث عن أنمي…|الكل|حلقة|فيلم|إغلاق|لا شيء هنا بعد
+en|English|All your anime in one place|Search anime…|All|episodes|Film|Close|Nothing here yet
+fr|Français|Tous vos animes au même endroit|Rechercher un anime…|Tous|épisodes|Film|Fermer|Rien ici pour l'instant
+es|Español|Todo tu anime en un solo lugar|Buscar anime…|Todos|episodios|Película|Cerrar|Aún no hay nada aquí
+pt|Português|Todo o seu anime num só lugar|Pesquisar anime…|Todos|episódios|Filme|Fechar|Nada aqui ainda
+de|Deutsch|Dein ganzer Anime an einem Ort|Anime suchen…|Alle|Folgen|Film|Schließen|Noch nichts hier
+it|Italiano|Tutti i tuoi anime in un posto|Cerca anime…|Tutti|episodi|Film|Chiudi|Ancora niente qui
+ru|Русский|Всё аниме в одном месте|Поиск аниме…|Все|серий|Фильм|Закрыть|Пока ничего нет
+tr|Türkçe|Tüm animeler tek yerde|Anime ara…|Tümü|bölüm|Film|Kapat|Henüz bir şey yok
+fa|فارسی|همه انیمه‌های شما در یک جا|جستجوی انیمه…|همه|قسمت|فیلم|بستن|هنوز چیزی اینجا نیست
+ur|اردو|آپ کا سارا انیمی ایک جگہ|انیمی تلاش کریں…|سب|اقساط|فلم|بند کریں|ابھی یہاں کچھ نہیں
+he|עברית|כל האנימה שלך במקום אחד|חיפוש אנימה…|הכול|פרקים|סרט|סגור|אין כאן עדיין כלום
+hi|हिन्दी|आपका सारा एनिमे एक जगह|एनिमे खोजें…|सभी|एपिसोड|फ़िल्म|बंद करें|यहाँ अभी कुछ नहीं है
+bn|বাংলা|আপনার সব অ্যানিমে এক জায়গায়|অ্যানিমে খুঁজুন…|সব|পর্ব|চলচ্চিত্র|বন্ধ করুন|এখানে এখনও কিছু নেই
+id|Indonesia|Semua anime Anda di satu tempat|Cari anime…|Semua|episode|Film|Tutup|Belum ada apa-apa
+ms|Melayu|Semua anime anda di satu tempat|Cari anime…|Semua|episod|Filem|Tutup|Belum ada apa-apa
+zh|中文|你的所有动漫，尽在一处|搜索动漫…|全部|集|电影|关闭|这里还没有内容
+ja|日本語|アニメをすべて一か所で|アニメを検索…|すべて|話|映画|閉じる|まだ何もありません
+ko|한국어|모든 애니를 한곳에서|애니 검색…|전체|화|영화|닫기|아직 아무것도 없습니다
+vi|Tiếng Việt|Tất cả anime của bạn ở một nơi|Tìm anime…|Tất cả|tập|Phim|Đóng|Chưa có gì ở đây
+th|ไทย|อนิเมะทั้งหมดของคุณในที่เดียว|ค้นหาอนิเมะ…|ทั้งหมด|ตอน|ภาพยนตร์|ปิด|ยังไม่มีอะไรที่นี่
+nl|Nederlands|Al je anime op één plek|Zoek anime…|Alles|afleveringen|Film|Sluiten|Nog niets hier
+pl|Polski|Całe Twoje anime w jednym miejscu|Szukaj anime…|Wszystkie|odcinków|Film|Zamknij|Na razie nic tu nie ma
+uk|Українська|Усе ваше аніме в одному місці|Пошук аніме…|Усі|серій|Фільм|Закрити|Тут поки нічого немає
+ro|Română|Tot anime-ul tău într-un singur loc|Caută anime…|Toate|episoade|Film|Închide|Nimic aici încă
+el|Ελληνικά|Όλα τα anime σας σε ένα μέρος|Αναζήτηση anime…|Όλα|επεισόδια|Ταινία|Κλείσιμο|Τίποτα εδώ ακόμη
+cs|Čeština|Všechno anime na jednom místě|Hledat anime…|Vše|dílů|Film|Zavřít|Zatím tu nic není
+sv|Svenska|All din anime på ett ställe|Sök anime…|Alla|avsnitt|Film|Stäng|Inget här än
+hu|Magyar|Minden animéd egy helyen|Anime keresése…|Mind|epizód|Film|Bezárás|Itt még nincs semmi
+fi|Suomi|Kaikki animesi yhdessä paikassa|Hae animea…|Kaikki|jaksoa|Elokuva|Sulje|Täällä ei ole vielä mitään
+da|Dansk|Al din anime på ét sted|Søg efter anime…|Alle|afsnit|Film|Luk|Intet her endnu
+no|Norsk|All animen din på ett sted|Søk etter anime…|Alle|episoder|Film|Lukk|Ingenting her ennå
+bg|Български|Цялото ти аниме на едно място|Търсене на аниме…|Всички|епизода|Филм|Затвори|Още няма нищо тук
+sr|Српски|Сав твој аниме на једном месту|Претражи аниме…|Све|епизода|Филм|Затвори|Овде још нема ничега
+hr|Hrvatski|Sav tvoj anime na jednom mjestu|Traži anime…|Sve|epizoda|Film|Zatvori|Ovdje još nema ničega
+sk|Slovenčina|Všetko anime na jednom mieste|Hľadať anime…|Všetko|dielov|Film|Zavrieť|Zatiaľ tu nič nie je
+sw|Kiswahili|Anime zako zote mahali pamoja|Tafuta anime…|Zote|vipindi|Filamu|Funga|Hakuna kitu hapa bado
+ta|தமிழ்|உங்கள் அனிமே அனைத்தும் ஒரே இடத்தில்|அனிமேவைத் தேடுங்கள்…|அனைத்தும்|அத்தியாயங்கள்|திரைப்படம்|மூடு|இங்கு இன்னும் எதுவும் இல்லை
+te|తెలుగు|మీ అన్ని అనిమేలు ఒకే చోట|అనిమే వెతకండి…|అన్నీ|ఎపిసోడ్లు|సినిమా|మూసివేయి|ఇక్కడ ఇంకా ఏమీ లేదు
+mr|मराठी|तुमचे सर्व अ‍ॅनिमे एकाच ठिकाणी|अ‍ॅनिमे शोधा…|सर्व|भाग|चित्रपट|बंद करा|येथे अजून काही नाही
+tl|Filipino|Lahat ng anime mo sa iisang lugar|Maghanap ng anime…|Lahat|episode|Pelikula|Isara|Wala pa rito
+am|አማርኛ|ሁሉም አኒሜዎ በአንድ ቦታ|አኒሜ ፈልግ…|ሁሉም|ክፍሎች|ፊልም|ዝጋ|እዚህ እስካሁን ምንም የለም
+ha|Hausa|Duk anime ɗinka a wuri ɗaya|Nemi anime…|Duka|sassa|Fim|Rufe|Babu komai a nan tukuna
+ca|Català|Tot el teu anime en un sol lloc|Cerca anime…|Tots|episodis|Pel·lícula|Tanca|Encara no hi ha res aquí
+lt|Lietuvių|Visas tavo anime vienoje vietoje|Ieškoti anime…|Visi|epizodai|Filmas|Uždaryti|Čia dar nieko nėra
+lv|Latviešu|Viss tavs anime vienā vietā|Meklēt anime…|Visi|sērijas|Filma|Aizvērt|Šeit vēl nekā nav
+et|Eesti|Kogu sinu anime ühes kohas|Otsi animet…|Kõik|osa|Film|Sulge|Siin pole veel midagi
+sq|Shqip|I gjithë anime yt në një vend|Kërko anime…|Të gjitha|episode|Film|Mbyll|Ende asgjë këtu
+az|Azərbaycan|Bütün animeləriniz bir yerdə|Anime axtar…|Hamısı|bölüm|Film|Bağla|Hələ burada heç nə yoxdur
+kk|Қазақша|Барлық анимеңіз бір жерде|Аниме іздеу…|Барлығы|серия|Фильм|Жабу|Мұнда әзірге ештеңе жоқ`.split("\n").map(l=>{const [code,name,h,s,all,eps,film,close,none]=l.split("|");return{code,name,h,s,all,eps,film,close,none}});
+const X={
+ar:{title:"تصفح الأنمي",latest:"الإصدارات الحديثة",popular:"الأكثر شهرة",top:"أعلى تقييم",genres:"الأنواع الشائعة",cont:"آخر المشاهدات",more:"عرض المزيد",done:"مكتملة",live:"يعرض حالياً",tv:"مسلسل",ep:"الحلقة",home:"الرئيسية",saved:"المحفوظات",lib:"المكتبة",me:"حسابي",nosaved:"لم تحفظ أي أنمي بعد",skip:"تخطي المقدمة",next:"الحلقة التالية",rate:"قيّم هذا الأنمي",theme:"الوضع الفاتح / الداكن",privacy:"سياسة الخصوصية",terms:"شروط الاستخدام",dmca:"التبليغ عن محتوى مخالف (DMCA)",ad:"إعلان",adspace:"مساحة إعلانية",adhint:"يظهر إعلانك هنا (أضفه في CFG.ads)",adwait:"يمكنك المتابعة بعد {n} ثانية",adthanks:"شكراً لدعمك!",adgo:"متابعة",vad:"🎁 شاهد إعلاناً تطوعاً",adleft:"إعلان إجباري بعد {n} حلقات",adnow:"إعلان قبل الحلقة التالية"},
+en:{title:"Browse anime",latest:"Latest releases",popular:"Most popular",top:"Top rated",genres:"Popular genres",cont:"Continue watching",more:"View more",done:"Completed",live:"Airing",tv:"TV",ep:"Episode",home:"Home",saved:"Saved",lib:"Library",me:"Me",nosaved:"Nothing saved yet",skip:"Skip intro",next:"Next episode",rate:"Rate this anime",theme:"Light / dark mode",privacy:"Privacy policy",terms:"Terms of use",dmca:"Report content (DMCA)",ad:"Ad",adspace:"Ad space",adhint:"Your ad appears here (add it in CFG.ads)",adwait:"You can continue in {n}s",adthanks:"Thanks for your support!",adgo:"Continue",vad:"🎁 Watch an ad voluntarily",adleft:"Required ad after {n} episodes",adnow:"Ad before the next episode"},
+fr:{title:"Parcourir les animes",latest:"Dernières sorties",popular:"Les plus populaires",top:"Les mieux notés",genres:"Genres populaires",cont:"Reprendre",more:"Voir plus",done:"Terminé",live:"En cours",tv:"Série",ep:"Épisode",home:"Accueil",saved:"Favoris",lib:"Bibliothèque",me:"Moi",nosaved:"Rien d'enregistré"}};
+const RTL=["ar","fa","ur","he"],GC=["#e5492b","#d9558a","#8a63d2","#4b7f93","#1f9d6b","#c98a12","#3a7bd5","#b0476f"];
+let T=LANGS[0],genre="*",cur=null,curEp=1,seen={},saved=[],tab="home",page=0;
+const S=k=>((X[T.code]||{})[k])||X.en[k];
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||d)}catch(e){return JSON.parse(d)}};
+const st=(k,v)=>{try{localStorage.setItem(k,typeof v==="string"?v:JSON.stringify(v))}catch(e){}};
+seen=ld("seen","{}");saved=ld("saved","[]");
+const img=a=>IMAGES[a.id]||a.img;
+const bg=a=>img(a)?`background-image:url('${encodeURI(img(a))}'),linear-gradient(160deg,${a.c[0]},${a.c[1]});background-size:cover;background-position:center`:`background:linear-gradient(160deg,${a.c[0]},${a.c[1]})`;
+const isSaved=id=>saved.includes(String(id));
+const card=a=>{const s=a.st||(a.year>=2025?"live":"done");
+ return `<div class="c" data-id="${a.id}"><div class="p" style="${bg(a)}">${img(a)?"":a.title}<span class="bd ${s}">${S(s)}</span><div class="yr"><span>${a.year||""} - ${a.eps.length>1?S("tv"):T.film}</span><i data-b="${a.id}">${isSaved(a.id)?"🔖":"⋮"}</i></div></div><b>${a.title}</b>${a.score?`<small>★ ${a.score}</small>`:""}</div>`};
+const row=(t,l)=>l.length?`<div class="sec"><div class="sh"><h3>${t}</h3><button data-go="lib">${S("more")}</button></div><div class="row">${l.map(card).join("")}</div></div>`:"";
+function renderHome(){
+ const hs=ANIME.slice(0,6);
+ $("#hero").innerHTML=hs.map(a=>`<div class="slide" data-id="${a.id}" style="${bg(a)}"><div><h2>${a.title}</h2><span>${S("ep")} 1</span></div></div>`).join("");
+ $("#pg").innerHTML=hs.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("");
+ let h="";
+ const cont=Object.keys(seen).map(id=>ANIME.find(a=>String(a.id)===id)).filter(Boolean);
+ if(cont.length)h+=`<div class="sec"><div class="sh"><h3>${S("cont")}</h3></div><div class="row">${cont.map(a=>{const s=seen[a.id],p=Math.round(s.length/a.eps.length*100);return `<div class="cw" data-id="${a.id}"><div class="cp" style="${bg(a)}"></div><div class="ci"><b>${S("ep")} ${Math.max(...s)}</b><span>${a.title}</span><div class="bar"><i style="width:${p}%"></i></div><small>${p}%</small></div></div>`}).join("")}</div></div>`;
+ h+=row(S("latest"),[...ANIME].sort((a,b)=>(b.year||0)-(a.year||0)).slice(0,20));
+ h+=row(S("live"),ANIME.filter(a=>a.st==="live").slice(0,20));
+ const n={};ANIME.forEach(a=>a.genre.forEach(g=>n[g]=(n[g]||0)+1));
+ const gs=Object.keys(n).sort((a,b)=>n[b]-n[a]).slice(0,8);
+ h+=`<div class="sec"><div class="sh"><h3>${S("genres")}</h3><button data-go="lib">${S("more")}</button></div><div class="gg">${gs.map((g,i)=>`<button class="g" data-g="${g}" style="background:${GC[i]}">${g}</button>`).join("")}</div></div>`;
+ h+=row(S("popular"),ANIME.slice(0,20));
+ h+=row(S("top"),ANIME.filter(a=>a.score).sort((a,b)=>b.score-a.score).slice(0,20));
+ $("#home").innerHTML=h;
+}
+function chips(){
+ const gs=[...new Set(ANIME.flatMap(a=>a.genre))];
+ $("#chips").innerHTML=`<button class="chip" aria-pressed="${genre==="*"}" data-g="*">${T.all}</button>`+gs.map(g=>`<button class="chip" aria-pressed="${g===genre}" data-g="${g}">${g}</button>`).join("");
+}
+function render(){
+ const q=$("#q").value.trim().toLowerCase();
+ const l=ANIME.filter(a=>(genre==="*"||a.genre.includes(genre))&&a.title.toLowerCase().includes(q));
+ $("#grid").innerHTML=l.length?l.map(card).join(""):`<p class="empty" style="grid-column:1/-1">${T.none}</p>`;
+ const sv=ANIME.filter(a=>isSaved(a.id));
+ $("#sgrid").innerHTML=sv.length?sv.map(card).join(""):`<p class="empty" style="grid-column:1/-1">${S("nosaved")}</p>`;
+}
+function refresh(){renderHome();chips();render();title();labels()}
+function title(){$("#tt").textContent=S(tab==="home"?"title":tab)}
+function go(t){tab=t;document.querySelectorAll(".v").forEach(v=>v.classList.toggle("on",v.id==="v-"+t));document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));title();window.scrollTo(0,0)}
+function setLang(c){
+ T=LANGS.find(l=>l.code===c)||LANGS[0];
+ document.documentElement.lang=T.code;document.documentElement.dir=RTL.includes(T.code)?"rtl":"ltr";
+ $("#q").placeholder=T.s;$("#close").textContent=T.close;$("#lang").value=T.code;st("lang",T.code);
+ refresh();if(cur&&$("#dlg").open)play(curEp);
+}
+$("#lang").innerHTML=LANGS.map(l=>`<option value="${l.code}">${l.name}</option>`).join("");
+$("#lang").onchange=e=>setLang(e.target.value);
+$("#q").oninput=render;
+$("#sbtn").onclick=()=>{go("lib");$("#q").focus()};
+$("#mbtn").onclick=()=>go("me");
+document.querySelector("nav").onclick=e=>{const b=e.target.closest("button");if(b)go(b.dataset.t)};
+document.addEventListener("click",e=>{
+ const b=e.target.closest("[data-b]");
+ if(b){const id=String(b.dataset.b);saved=isSaved(id)?saved.filter(x=>x!==id):[...saved,id];st("saved",saved);refresh();return}
+ if(e.target.closest("[data-go]")){go("lib");return}
+ const g=e.target.closest("[data-g]");
+ if(g){genre=g.dataset.g;go("lib");chips();render();return}
+ const c=e.target.closest(".c,.slide,.cw");if(c)open_(c.dataset.id);
+});
+$("#hero").addEventListener("scroll",()=>{const h=$("#hero"),f=h.firstChild;if(!f)return;const i=Math.round(Math.abs(h.scrollLeft)/(f.offsetWidth+12));document.querySelectorAll("#pg i").forEach((d,k)=>d.classList.toggle("on",k===i))});
+/* الإعلانات: type = image | video | html. مثال: ads:[{type:"image",src:"https://.../banner.jpg",link:"https://...",secs:15},{type:"video",src:"https://.../ad.mp4"},{type:"html",src:"<شيفرة الإعلان>"}]. إعلان إجباري كل adEvery حلقات. */
+const CFG={contact:"[البريد]",plausible:"",adminHash:"",ads:[],adSecs:15,adEvery:5},BASE=document.title;
+const SUBS={/* "1:1":[["ar","العربية","https://.../ar.vtt"]] */};
+const LEGAL={ar:{privacy:"نحفظ على جهازك فقط (داخل المتصفح) تفضيلاتك وقائمة المحفوظات وتقدّم المشاهدة وتقييماتك. لا نبيع بياناتك. قد نستخدم إحصاءات زيارات مجهولة. قد تستخدم شبكات الإعلانات التي نعرض إعلاناتها ملفات تعريف ارتباط خاصة بها. للتواصل: {c}",terms:"الموقع للاستخدام الشخصي. لا يجوز نسخ تصميم الموقع أو كوده دون إذن. المحتوى المعروض يخص أصحابه، ولا نتحمل مسؤولية استخدامه خارج نطاق الترخيص. نحتفظ بحق تعديل الشروط.",dmca:"إذا كنت صاحب حقوق ورأيت محتوى مخالفاً، أرسل رابط المحتوى وإثبات ملكيتك إلى {c} وسنزيله بسرعة."},
+en:{privacy:"Your preferences, saved list, watch progress and ratings are stored only on your device (in the browser). We do not sell your data. We may use anonymous visit statistics. Ad networks we show may use their own cookies. Contact: {c}",terms:"This site is for personal use. The site design and code may not be copied without permission. Displayed content belongs to its owners, and we are not responsible for use outside its license. We may update these terms.",dmca:"If you are a rights holder and see infringing content, send the link and proof of ownership to {c} and we will remove it promptly."}};
+const legal=()=>{const L=LEGAL[T.code]||LEGAL.en;return["privacy","terms","dmca"].map(k=>`<details><summary>${S(k)}</summary><p>${L[k].replace("{c}",(draft.settings||{}).contact||CFG.contact)}</p></details>`).join("")};
+function labels(){$("#skip").textContent="⏩ "+S("skip");$("#nx").textContent=S("next")+" ⏭";$("#theme").textContent=(document.documentElement.dataset.theme==="light"?"🌙 ":"☀️ ")+S("theme");$("#legal").innerHTML=legal();$("#vad").textContent=S("vad");const L=Math.max(0,CFG.adEvery-adc);$("#adinfo").textContent=L?S("adleft").replace("{n}",L):S("adnow")}
+let pos=ld("pos","{}"),rate=ld("rate","{}"),lastSave=0;
+const vid=()=>$("#player video");
+let adc=+ld("adc","0")||0,adi=0,timer;const unl=new Set(),cnt=new Set();
+function showAd(must,done){
+ const p=$("#player"),ad=CFG.ads.length?CFG.ads[adi++%CFG.ads.length]:null,secs=(ad&&ad.secs)||CFG.adSecs;
+ const body=!ad?`<div class="adh"><b>${S("adspace")}</b><span>${S("adhint")}</span></div>`
+  :ad.type==="video"?`<video src="${esc(ad.src)}" autoplay muted playsinline></video>`
+  :ad.type==="html"?`<iframe sandbox="allow-scripts allow-popups" srcdoc="${esc(ad.src)}"></iframe>`
+  :`<a href="${esc(ad.link||"#")}" target="_blank" rel="noopener sponsored"><img src="${esc(ad.src)}" alt=""></a>`;
+ p.innerHTML=`<div class="adbox"><span class="adtag">${S("ad")}</span>${body}<div class="adbar"><span id="adt"></span><button class="chip" id="adgo" disabled></button>${must?"":`<button class="chip" id="adx">${S("close")}</button>`}</div></div>`;
+ let t=secs;clearTimeout(timer);
+ const tick=()=>{if(!$("#adt"))return;$("#adt").textContent=t>0?S("adwait").replace("{n}",t):S("adthanks");$("#adgo").disabled=t>0;$("#adgo").textContent=S("adgo");if(t>0){t--;timer=setTimeout(tick,1000)}};
+ tick();
+ $("#adgo").onclick=()=>{clearTimeout(timer);done()};
+ if(!must)$("#adx").onclick=()=>{clearTimeout(timer);play(curEp)};
+}
+const mark=n=>{seen[cur.id]=[...new Set([...(seen[cur.id]||[]),n])].sort((a,b)=>a-b);st("seen",seen);drawEps();renderHome()};
+function renderRate(){const r=rate[cur.id]||0;$("#rt").innerHTML=`<span>${S("rate")}</span>`+[1,2,3,4,5].map(i=>`<button data-r="${i}" aria-label="${i}">${i<=r?"★":"☆"}</button>`).join("")}
+function open_(id){
+ cur=ANIME.find(a=>String(a.id)===String(id));
+ const last=(seen[cur.id]||[]).slice(-1)[0];
+ curEp=last?Math.min(last+1,cur.eps.length):1;
+ $("#dt").textContent=cur.title;$("#dm").textContent=cur.genre.join(", ")+(cur.year?" • "+cur.year:"");$("#dd").textContent=cur.desc;
+ renderRate();play(curEp);$("#dlg").showModal();
+ document.title=cur.title+" — أنيفوريا";try{history.replaceState(null,"","#/a/"+encodeURIComponent(cur.id))}catch(e){}
+}
+function play(n){
+ curEp=n;const ep=cur.eps[n-1],p=$("#player"),k=cur.id+":"+n;
+ if(ep.url&&!unl.has(k)&&adc>=CFG.adEvery){drawEps();labels();showAd(true,()=>{unl.add(k);adc=0;st("adc",adc);labels();play(n)});return}
+ if(ep.url){
+  p.innerHTML=`<video controls playsinline src="${esc(ep.url)}">${(SUBS[k]||[]).map((t,i)=>`<track kind="subtitles" srclang="${t[0]}" label="${esc(t[1])}" src="${esc(t[2])}"${i?"":" default"}>`).join("")}</video>`;
+  const v=vid();v.playbackRate=+$("#spd").value;
+  v.onloadedmetadata=()=>{if(pos[k]&&pos[k]<v.duration-10)v.currentTime=pos[k]};
+  v.onplay=()=>{if(!cnt.has(k)){cnt.add(k);adc++;st("adc",adc);labels()}mark(n)};
+  v.ontimeupdate=()=>{const t=Date.now();if(t-lastSave>5000){lastSave=t;pos[k]=Math.floor(v.currentTime);st("pos",pos)}};
+  v.onended=()=>{delete pos[k];st("pos",pos);if(n<cur.eps.length){play(n+1);const nv=vid();if(nv)nv.play().catch(()=>{})}};
+ }else p.innerHTML=`<p>${T.none}<br>#${n}</p>`;
+ drawEps();
+}
+$("#vad").onclick=()=>{const v=vid(),k=cur.id+":"+curEp;if(v){pos[k]=Math.floor(v.currentTime);st("pos",pos);v.pause()}showAd(false,()=>{adc=Math.max(0,adc-1);st("adc",adc);labels();play(curEp)})};
+$("#skip").onclick=()=>{const v=vid();if(v)v.currentTime+=85};
+$("#nx").onclick=()=>{if(cur&&curEp<cur.eps.length)play(curEp+1)};
+$("#spd").onchange=e=>{const v=vid();if(v)v.playbackRate=+e.target.value};
+$("#rt").onclick=e=>{const b=e.target.closest("[data-r]");if(b){rate[cur.id]=+b.dataset.r;st("rate",rate);renderRate()}};
+$("#vt").onclick=()=>$("#grid").classList.toggle("list");
+$("#theme").onclick=()=>{const d=document.documentElement;d.dataset.theme=d.dataset.theme==="light"?"dark":"light";st("theme",d.dataset.theme);labels()};
+let draft={anime:[],videos:{},subs:{},images:{}},adminOK=false;
+const sha=async t=>[...new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,"0")).join("");
+function applyCat(c){
+ Object.assign(VIDEOS,c.videos||{});Object.assign(SUBS,c.subs||{});Object.assign(IMAGES,c.images||{});
+ (c.anime||[]).forEach(m=>{if(ANIME.some(a=>String(a.id)===m.id))return;const h=[...m.id].reduce((x,ch)=>x+ch.charCodeAt(0),0);
+  ANIME.unshift({id:m.id,title:esc(m.title),year:+m.year||"",genre:(m.genre||[]).map(esc),desc:esc(m.desc||""),img:m.img||"",st:m.st,c:[`hsl(${h%360} 70% 55%)`,`hsl(${(h+70)%360} 55% 25%)`],eps:Array.from({length:+m.eps||1},(_,k)=>({n:k+1,url:""}))})});
+ Object.keys(VIDEOS).forEach(k=>{const[i,n]=k.split(":"),a=ANIME.find(x=>String(x.id)===i);if(a)while(a.eps.length<+n)a.eps.push({n:a.eps.length+1,url:""})});
+ ANIME.forEach(a=>a.eps.forEach(e=>{e.url=VIDEOS[a.id+":"+e.n]||""}));
+}
+async function loadCatalog(){
+ let c=ld("cat","null");
+ if(!c){try{const r=await fetch("catalog.json",{cache:"no-store"});if(r.ok)c=await r.json()}catch(e){}}
+ draft={anime:[],videos:{},subs:{},images:{},...(c||{})};
+ applyCat(draft);refresh();route();
+}
+function commit(m){
+ for(let i=ANIME.length;i--;)if(String(ANIME[i].id).startsWith("c"))ANIME.splice(i,1);
+ applyCat(draft);st("cat",draft);refresh();adminView();$("#ms").textContent=m;
+}
+const AH=()=>(draft.settings||{}).adminHash||CFG.adminHash;
+function exportCat(){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(draft,null,1)],{type:"application/json"}));a.download="catalog.json";a.click()}
+async function adminView(){
+ const b=$("#admb");
+ if(!AH()){b.innerHTML=`<p>إعداد أول مرة: اختر كلمة سر للإدارة وبريداً للتواصل. سيُنشأ ملف catalog.json، ارفعه إلى مستودع GitHub (Add file ← Upload files) ليحلّ محل الموجود.</p><input class="search" id="pw" type="password" placeholder="كلمة سر جديدة (8 أحرف على الأقل)"><input class="search" id="ct" type="email" placeholder="بريد التواصل"><button class="chip" id="mk">إنشاء الملف وتنزيله</button><p id="ms"></p>`;
+ $("#mk").onclick=async()=>{const p=$("#pw").value,c=$("#ct").value.trim();if(p.length<8||!c.includes("@")){$("#ms").textContent="أدخل كلمة سر (8 أحرف+) وبريداً صحيحاً";return}
+  draft.settings={adminHash:await sha(p),contact:c};st("cat",draft);exportCat();$("#ms").textContent="تم تنزيل catalog.json. ارفعه الآن إلى المستودع."};return}
+ if(!adminOK){b.innerHTML=`<input class="search" id="pw" type="password" placeholder="كلمة السر"><button class="chip" id="lg">دخول</button><p id="er" style="color:#ff7a8a"></p>`;$("#lg").onclick=async()=>{if(await sha($("#pw").value)===AH()){adminOK=true;adminView()}else $("#er").textContent="كلمة السر غير صحيحة"};return}
+ b.innerHTML=`<h3>إضافة أنمي</h3><input class="search" id="n1" placeholder="العنوان"><input class="search" id="n2" type="number" placeholder="السنة"><input class="search" id="n3" placeholder="التصنيفات (افصل بفاصلة)"><input class="search" id="n4" placeholder="رابط صورة الغلاف (اختياري)"><input class="search" id="n5" type="number" placeholder="عدد الحلقات"><select class="search" id="n6"><option value="done">مكتملة</option><option value="live">يعرض حالياً</option></select><textarea class="search" id="n7" rows="3" placeholder="وصف قصير"></textarea><button class="chip" id="add">إضافة الأنمي</button>
+<h3>رابط حلقة</h3><input class="search" id="v1" list="dl" placeholder="اسم الأنمي"><datalist id="dl">${ANIME.map(a=>`<option value="${a.title}">`).join("")}</datalist><input class="search" id="v2" type="number" placeholder="رقم الحلقة"><input class="search" id="v3" placeholder="رابط الفيديو (mp4/webm) — اتركه فارغاً للحذف"><input class="search" id="v4" placeholder="ترجمة (اختياري): ar|العربية|https://.../ar.vtt"><button class="chip" id="sv">حفظ الرابط</button>
+<h3>أنمي أضفتَه</h3>${draft.anime.map(m=>`<div>${esc(m.title)} (${m.eps}) <button class="chip" data-del="${m.id}">حذف</button></div>`).join("")||"<p>لا شيء بعد.</p>"}
+<h3>البريد</h3><input class="search" id="ct" type="email" value="${esc((draft.settings||{}).contact||"")}"><button class="chip" id="sc">حفظ البريد</button>
+<h3>النشر للزوار</h3><p>صدّر الملف وارفعه إلى جذر الموقع باسم <code>catalog.json</code> ليراه الزوار.</p><button class="chip" id="ex">تصدير catalog.json</button><label class="chip">استيراد<input type="file" id="im" accept=".json" hidden></label><button class="chip" id="rs">مسح المسودة</button><p id="ms"></p>`;
+ $("#add").onclick=()=>{const t=$("#n1").value.trim();if(!t){$("#ms").textContent="العنوان مطلوب";return}
+  draft.anime.push({id:"c"+Date.now().toString(36),title:t,year:$("#n2").value,genre:$("#n3").value.split(/[,،]/).map(x=>x.trim()).filter(Boolean),img:$("#n4").value.trim(),eps:+$("#n5").value||1,st:$("#n6").value,desc:$("#n7").value.trim()});commit("تمت الإضافة")};
+ $("#sv").onclick=()=>{const a=ANIME.find(x=>x.title===esc($("#v1").value.trim())),n=+$("#v2").value;if(!a||!n){$("#ms").textContent="اختر أنمي من القائمة وأدخل رقم الحلقة";return}
+  const k=a.id+":"+n,u=$("#v3").value.trim();
+  if(u)draft.videos[k]=u;else{delete draft.videos[k];delete VIDEOS[k]}
+  const p=$("#v4").value.trim().split("|");if(p.length===3)(draft.subs[k]=draft.subs[k]||[]).push(p);
+  commit("تم الحفظ")};
+ b.onclick=e=>{const d=e.target.closest("[data-del]");if(!d)return;const id=d.dataset.del;draft.anime=draft.anime.filter(m=>m.id!==id);Object.keys(draft.videos).forEach(k=>{if(k.startsWith(id+":")){delete draft.videos[k];delete VIDEOS[k]}});commit("تم الحذف")};
+ $("#ex").onclick=exportCat;
+ $("#im").onchange=async e=>{try{draft={anime:[],videos:{},subs:{},images:{},...JSON.parse(await e.target.files[0].text())};commit("تم الاستيراد")}catch(x){$("#ms").textContent="ملف غير صالح"}};
+ $("#sc").onclick=()=>{draft.settings={...(draft.settings||{}),contact:$("#ct").value.trim()};commit("تم حفظ البريد")};
+ $("#rs").onclick=()=>{try{localStorage.removeItem("cat")}catch(e){}location.reload()};
+}
+$("#admx").onclick=()=>$("#adm").close();
+$("#adm").addEventListener("close",()=>{try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}});
+function route(){
+ if(location.hash==="#/admin"&&!$("#adm").open){$("#adm").showModal();adminView();return}const m=location.hash.match(/^#\/a\/(.+)$/);if(!m||$("#dlg").open)return;const id=decodeURIComponent(m[1]);if(ANIME.some(a=>String(a.id)===id))open_(id)}
+function drawEps(){
+ const s=seen[cur.id]||[];
+ $("#eps").innerHTML=cur.eps.map(e=>`<button class="ep${s.includes(e.n)?" seen":""}" aria-current="${e.n===curEp}" data-n="${e.n}">${e.n}</button>`).join("");
+}
+$("#eps").onclick=e=>{const b=e.target.closest(".ep");if(b)play(+b.dataset.n)};
+$("#close").onclick=()=>$("#dlg").close();
+$("#dlg").addEventListener("close",()=>{clearTimeout(timer);$("#player").innerHTML="";document.title=BASE;try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}});
+$("#dlg").addEventListener("click",e=>{if(e.target===$("#dlg"))$("#dlg").close()});
+
+/* AniList: يعمل عند نشر الموقع على استضافتك. داخل معاينة claude.ai يُحجب الاتصال فيبقى الكتالوج المحلي */
+async function loadAL(){
+ try{
+  const r=await fetch("https://graphql.anilist.co",{method:"POST",headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({query:`query($p:Int){Page(page:$p,perPage:50){pageInfo{hasNextPage}media(type:ANIME,sort:POPULARITY_DESC,isAdult:false){id title{romaji english}description(asHtml:false)coverImage{large}genres seasonYear episodes averageScore status}}}`,variables:{p:page+1}})});
+  const j=(await r.json()).data.Page;page++;
+  j.media.forEach(m=>{const t=m.title.english||m.title.romaji,id="a"+m.id;
+   if(ANIME.some(a=>a.title.toLowerCase()===t.toLowerCase()))return;
+   ANIME.push({id,title:esc(t),year:m.seasonYear,genre:m.genres.map(esc),desc:esc((m.description||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim().slice(0,170)),
+    img:m.coverImage.large,score:m.averageScore?(m.averageScore/10).toFixed(2):"",st:m.status==="RELEASING"?"live":"done",
+    c:[`hsl(${m.id%360} 70% 55%)`,`hsl(${(m.id+70)%360} 55% 25%)`],
+    eps:Array.from({length:m.episodes||12},(_,k)=>({n:k+1,url:VIDEOS[id+":"+(k+1)]||""}))})});
+  $("#more").hidden=!j.pageInfo.hasNextPage;$("#credit").hidden=false;refresh();route();
+ }catch(e){}
+}
+$("#more").onclick=loadAL;
+setLang(ld("lang",'""')||(navigator.language||"ar").slice(0,2));
+document.documentElement.dataset.theme=ld("theme",'"dark"');labels();route();
+if("serviceWorker"in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
+if(CFG.plausible){const sc=document.createElement("script");sc.defer=true;sc.dataset.domain=CFG.plausible;sc.src="https://plausible.io/js/script.js";document.head.append(sc)}
+loadCatalog().then(()=>loadAL());
+</script>
+</body>
+</html>
