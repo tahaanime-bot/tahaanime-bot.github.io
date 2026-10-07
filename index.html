@@ -351,18 +351,19 @@ function commit(m){
  applyCat(draft);st("cat",draft);refresh();adminView();$("#ms").textContent=m;
 }
 const AH=()=>(draft.settings||{}).adminHash||CFG.adminHash;
+function showJson(){const t=$("#js"),c=$("#cp");t.hidden=false;c.hidden=false;t.value=JSON.stringify(draft,null,1);t.select();c.onclick=async()=>{try{await navigator.clipboard.writeText(t.value)}catch(e){t.select();document.execCommand("copy")}c.textContent="تم النسخ ✓"}}
 function exportCat(){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(draft,null,1)],{type:"application/json"}));a.download="catalog.json";a.click()}
 async function adminView(){
  const b=$("#admb");
- if(!AH()){b.innerHTML=`<p>إعداد أول مرة: اختر كلمة سر للإدارة وبريداً للتواصل. سيُنشأ ملف catalog.json، ارفعه إلى مستودع GitHub (Add file ← Upload files) ليحلّ محل الموجود.</p><input class="search" id="pw" type="password" placeholder="كلمة سر جديدة (8 أحرف على الأقل)"><input class="search" id="ct" type="email" placeholder="بريد التواصل"><button class="chip" id="mk">إنشاء الملف وتنزيله</button><p id="ms"></p>`;
+ if(!AH()){b.innerHTML=`<p>إعداد أول مرة: اختر كلمة سر للإدارة وبريداً للتواصل. سيظهر لك نص catalog.json لتنسخه وتلصقه في GitHub.</p><input class="search" id="pw" type="password" placeholder="كلمة سر جديدة (8 أحرف على الأقل)"><input class="search" id="ct" type="email" placeholder="بريد التواصل"><button class="chip" id="mk">إنشاء النص</button><p id="ms"></p><textarea class="search" id="js" rows="8" hidden></textarea><button class="chip" id="cp" hidden>نسخ النص</button>`;
  $("#mk").onclick=async()=>{const p=$("#pw").value,c=$("#ct").value.trim();if(p.length<8||!c.includes("@")){$("#ms").textContent="أدخل كلمة سر (8 أحرف+) وبريداً صحيحاً";return}
-  draft.settings={adminHash:await sha(p),contact:c};st("cat",draft);exportCat();$("#ms").textContent="تم تنزيل catalog.json. ارفعه الآن إلى المستودع."};return}
+  draft.settings={adminHash:await sha(p),contact:c};st("cat",draft);showJson();$("#ms").textContent="انسخ النص أدناه ثم الصقه في catalog.json على GitHub (✏️) واضغط Commit."};return}
  if(!adminOK){b.innerHTML=`<input class="search" id="pw" type="password" placeholder="كلمة السر"><button class="chip" id="lg">دخول</button><p id="er" style="color:#ff7a8a"></p>`;$("#lg").onclick=async()=>{if(await sha($("#pw").value)===AH()){adminOK=true;adminView()}else $("#er").textContent="كلمة السر غير صحيحة"};return}
  b.innerHTML=`<h3>إضافة أنمي</h3><input class="search" id="n1" placeholder="العنوان"><input class="search" id="n2" type="number" placeholder="السنة"><input class="search" id="n3" placeholder="التصنيفات (افصل بفاصلة)"><input class="search" id="n4" placeholder="رابط صورة الغلاف (اختياري)"><input class="search" id="n5" type="number" placeholder="عدد الحلقات"><select class="search" id="n6"><option value="done">مكتملة</option><option value="live">يعرض حالياً</option></select><textarea class="search" id="n7" rows="3" placeholder="وصف قصير"></textarea><button class="chip" id="add">إضافة الأنمي</button>
 <h3>رابط حلقة</h3><input class="search" id="v1" list="dl" placeholder="اسم الأنمي"><datalist id="dl">${ANIME.map(a=>`<option value="${a.title}">`).join("")}</datalist><input class="search" id="v2" type="number" placeholder="رقم الحلقة"><input class="search" id="v3" placeholder="رابط الفيديو (mp4/webm) — اتركه فارغاً للحذف"><input class="search" id="v4" placeholder="ترجمة (اختياري): ar|العربية|https://.../ar.vtt"><button class="chip" id="sv">حفظ الرابط</button>
 <h3>أنمي أضفتَه</h3>${draft.anime.map(m=>`<div>${esc(m.title)} (${m.eps}) <button class="chip" data-del="${m.id}">حذف</button></div>`).join("")||"<p>لا شيء بعد.</p>"}
 <h3>البريد</h3><input class="search" id="ct" type="email" value="${esc((draft.settings||{}).contact||"")}"><button class="chip" id="sc">حفظ البريد</button>
-<h3>النشر للزوار</h3><p>صدّر الملف وارفعه إلى جذر الموقع باسم <code>catalog.json</code> ليراه الزوار.</p><button class="chip" id="ex">تصدير catalog.json</button><label class="chip">استيراد<input type="file" id="im" accept=".json" hidden></label><button class="chip" id="rs">مسح المسودة</button><p id="ms"></p>`;
+<h3>النشر للزوار</h3><p>صدّر الملف وارفعه إلى جذر الموقع باسم <code>catalog.json</code> ليراه الزوار.</p><button class="chip" id="ex">تصدير catalog.json</button><button class="chip" id="sj">عرض النص للنسخ</button><textarea class="search" id="js" rows="8" hidden></textarea><button class="chip" id="cp" hidden>نسخ النص</button><label class="chip">استيراد<input type="file" id="im" accept=".json" hidden></label><button class="chip" id="rs">مسح المسودة</button><p id="ms"></p>`;
  $("#add").onclick=()=>{const t=$("#n1").value.trim();if(!t){$("#ms").textContent="العنوان مطلوب";return}
   draft.anime.push({id:"c"+Date.now().toString(36),title:t,year:$("#n2").value,genre:$("#n3").value.split(/[,،]/).map(x=>x.trim()).filter(Boolean),img:$("#n4").value.trim(),eps:+$("#n5").value||1,st:$("#n6").value,desc:$("#n7").value.trim()});commit("تمت الإضافة")};
  $("#sv").onclick=()=>{const a=ANIME.find(x=>x.title===esc($("#v1").value.trim())),n=+$("#v2").value;if(!a||!n){$("#ms").textContent="اختر أنمي من القائمة وأدخل رقم الحلقة";return}
@@ -371,7 +372,7 @@ async function adminView(){
   const p=$("#v4").value.trim().split("|");if(p.length===3)(draft.subs[k]=draft.subs[k]||[]).push(p);
   commit("تم الحفظ")};
  b.onclick=e=>{const d=e.target.closest("[data-del]");if(!d)return;const id=d.dataset.del;draft.anime=draft.anime.filter(m=>m.id!==id);Object.keys(draft.videos).forEach(k=>{if(k.startsWith(id+":")){delete draft.videos[k];delete VIDEOS[k]}});commit("تم الحذف")};
- $("#ex").onclick=exportCat;
+ $("#ex").onclick=exportCat;$("#sj").onclick=showJson;
  $("#im").onchange=async e=>{try{draft={anime:[],videos:{},subs:{},images:{},...JSON.parse(await e.target.files[0].text())};commit("تم الاستيراد")}catch(x){$("#ms").textContent="ملف غير صالح"}};
  $("#sc").onclick=()=>{draft.settings={...(draft.settings||{}),contact:$("#ct").value.trim()};commit("تم حفظ البريد")};
  $("#rs").onclick=()=>{try{localStorage.removeItem("cat")}catch(e){}location.reload()};
