@@ -349,7 +349,7 @@ async function loadCatalog(){
 }
 function commit(m){
  for(let i=ANIME.length;i--;)if(String(ANIME[i].id).startsWith("c"))ANIME.splice(i,1);
- applyCat(draft);st("cat",draft);refresh();adminView();$("#ms").textContent=m;
+ applyCat(draft);st("cat",draft);refresh();adminView();$("#ms").textContent=m;fillCovers();
 }
 const AH=()=>(draft.settings||{}).adminHash||CFG.adminHash;
 function showJson(){const t=$("#js"),c=$("#cp");t.hidden=false;c.hidden=false;t.value=JSON.stringify(draft,null,1);t.select();c.onclick=async()=>{try{await navigator.clipboard.writeText(t.value)}catch(e){t.select();document.execCommand("copy")}c.textContent="تم النسخ ✓"}}
@@ -392,6 +392,22 @@ $("#dlg").addEventListener("close",()=>{clearTimeout(timer);$("#player").innerHT
 $("#dlg").addEventListener("click",e=>{if(e.target===$("#dlg"))$("#dlg").close()});
 
 /* AniList: يعمل عند نشر الموقع على استضافتك. داخل معاينة claude.ai يُحجب الاتصال فيبقى الكتالوج المحلي */
+/* أغلفة: يبحث في AniList عن غلاف كل أنمي بلا صورة (بالاسم الإنجليزي) */
+const EN=["Attack on Titan", "Naruto", "One Piece", "Death Note", "Fullmetal Alchemist: Brotherhood", "Dragon Ball Z", "Demon Slayer: Kimetsu no Yaiba", "Jujutsu Kaisen", "Bleach", "Hunter x Hunter (2011)", "Spirited Away", "Tokyo Ghoul", "Sword Art Online", "My Hero Academia", "One Punch Man", "Mob Psycho 100", "Code Geass: Lelouch of the Rebellion", "Steins;Gate", "Violet Evergarden", "Cowboy Bebop", "Neon Genesis Evangelion", "Fairy Tail", "Chainsaw Man", "Spy x Family", "Your Name", "Howl's Moving Castle", "Yuri!!! on Ice", "Haikyu!!", "Frieren: Beyond Journey's End", "Solo Leveling"];
+async function fillCovers(){
+ ANIME.forEach(a=>{if(typeof a.id==="number")a.en=EN[a.id-1];else if(String(a.id).startsWith("c")&&/[A-Za-z]/.test(a.title))a.en=a.title.replace(/&amp;/g,"&")});
+ const need=ANIME.filter(a=>!img(a)&&a.en&&!a.tried);
+ for(let k=0;k<need.length;k+=10){
+  const part=need.slice(k,k+10);
+  try{
+   const q="query{"+part.map((a,i)=>`m${i}:Media(search:${JSON.stringify(a.en)},type:ANIME,sort:SEARCH_MATCH){coverImage{large}averageScore}`).join("")+"}";
+   const r=await fetch("https://graphql.anilist.co",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({query:q})});
+   const d=(await r.json()).data||{};
+   part.forEach((a,i)=>{a.tried=1;const m=d["m"+i];if(m&&m.coverImage){a.img=m.coverImage.large;if(m.averageScore&&!a.score)a.score=(m.averageScore/10).toFixed(2)}});
+   $("#credit").hidden=false;refresh();
+  }catch(e){}
+ }
+}
 let busy=false;
 async function loadAL(){
  if(busy)return;busy=true;
@@ -416,7 +432,7 @@ document.documentElement.dataset.theme=ld("theme",'"dark"');labels();
 if("serviceWorker"in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
 if(CFG.plausible){const sc=document.createElement("script");sc.defer=true;sc.dataset.domain=CFG.plausible;sc.src="https://plausible.io/js/script.js";document.head.append(sc)}
 window.addEventListener("hashchange",route);
-loadCatalog().then(()=>loadAL());
+loadCatalog().then(()=>{fillCovers();loadAL()});
 </script>
 </body>
 </html>
