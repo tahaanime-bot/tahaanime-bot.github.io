@@ -43,6 +43,10 @@ h2{font-size:18px;margin:20px 0 10px}
 .epr img{width:110px;aspect-ratio:16/9;object-fit:cover;border-radius:8px}
 .epr > div{flex:1;min-width:0}
 .btn.play{background:var(--accent);color:#2a0f18;border-color:var(--accent);font-weight:700}
+.epsearch{display:flex;gap:8px;margin-bottom:12px}
+.epsearch input{flex:1;min-width:0;background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 12px;font:inherit}
+.epsearch input:focus{outline:2px solid var(--accent)}
+.epsearch button{color:var(--text);font:inherit;cursor:pointer}
 .trailer{width:100%;max-width:640px;aspect-ratio:16/9;border:0;border-radius:12px;display:block}
 </style>
 </head>
@@ -55,6 +59,9 @@ h2{font-size:18px;margin:20px 0 10px}
 
 <script>
 const API = "https://graphql.anilist.co";
+// ضع هنا مفتاح YouTube Data API (مجاني) ليبحث الموقع تلقائياً عن الحلقات في القنوات الرسمية
+const YT_KEY = "";
+const FREE_HANDLES = ["@AniOneAsia", "@MuseAsia"];
 const app = document.getElementById("app");
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const title = t => t.english || t.romaji || t.native || "";
@@ -108,6 +115,46 @@ async function home() {
     <div class="grid">${d.hot.media.map(m => card(m)).join("")}</div>`;
 }
 
+const ytGet = async (path, params) => {
+  const r = await fetch("https://www.googleapis.com/youtube/v3/" + path + "?" + new URLSearchParams({ ...params, key: YT_KEY }));
+  if (!r.ok) throw new Error("yt " + r.status);
+  return r.json();
+};
+const cached = (k, ttl) => { try { const c = JSON.parse(localStorage.getItem(k) || "null"); if (c && Date.now() - c.t < ttl) return c; } catch (e) {} return null; };
+const store = (k, d) => { try { localStorage.setItem(k, JSON.stringify({ t: Date.now(), d })); } catch (e) {} };
+const norm = s => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
+async function channelIds() {
+  const c = cached("al:chan", 7 * 864e5);
+  if (c) return c.d;
+  const ids = [];
+  for (const h of FREE_HANDLES) {
+    try { const d = await ytGet("channels", { part: "id", forHandle: h }); if (d.items && d.items[0]) ids.push(d.items[0].id); } catch (e) {}
+  }
+  if (ids.length) store("al:chan", ids);
+  return ids;
+}
+
+// يبحث عن الحلقة في القنوات الرسمية المجانية فقط، ويرجع معرّف الفيديو أو null
+async function findFree(id, m, n) {
+  if (!YT_KEY) return null;
+  const key = "al:free:" + id + ":" + n;
+  const c = cached(key, 3 * 864e5);
+  if (c) return c.d || null;
+  const ids = await channelIds();
+  if (!ids.length) return null;
+  const names = [m.title.english, m.title.romaji].filter(Boolean).map(t => norm(t).slice(0, 25));
+  const epRe = new RegExp("\\b(episode|ep)\\s*0*" + n + "\\b");
+  const d = await ytGet("search", { part: "snippet", type: "video", videoEmbeddable: "true", maxResults: "25", q: (m.title.english || m.title.romaji) + " episode " + n });
+  const hit = (d.items || []).find(v => {
+    const t = norm(v.snippet.title);
+    return ids.includes(v.snippet.channelId) && names.some(x => x && t.includes(x)) && epRe.test(t);
+  });
+  const vid = hit ? hit.id.videoId : "";
+  store(key, vid);
+  return vid || null;
+}
+
 // ملف مصادر الحلقات (اختياري) بجانب index.html: episodes.json
 async function sources() {
   try { const r = await fetch("episodes.json", { cache: "no-store" }); return r.ok ? await r.json() : {}; }
@@ -135,9 +182,9 @@ async function detail(id) {
   const desc = esc((m.description || "لا يوجد وصف.").replace(/<[^>]+>/g, " "));
   let rows = "";
   for (let i = 1; i <= n; i++) {
-    rows += `<a class="epr" href="#/anime/${id}/ep/${i}">
+    rows += `<a class="epr" data-n="${i}" href="#/anime/${id}/ep/${i}">
       <img loading="lazy" src="${esc(m.coverImage.large)}" alt="">
-      <div><b>الحلقة ${i}</b><div class="meta">${src[i] ? "متاحة" : "لا يوجد مصدر بعد"}</div></div>
+      <div><b>الحلقة ${i}</b><div class="meta">${src[i] ? "متاحة" : "اضغط للتشغيل"}</div></div>
       <span class="btn play">شغّل الآن</span></a>`;
   }
   const chars = (m.characters.nodes || []).map(c => `
@@ -153,16 +200,32 @@ async function detail(id) {
       </div>
     </div>
     <h2>الحلقات</h2>
+    <div class="epsearch">
+      <input id="epq" type="number" min="1" inputmode="numeric" placeholder="اكتب رقم الحلقة">
+      <button class="btn" id="epgo">اذهب</button>
+    </div>
     <div class="eplist">${rows || '<p class="note">لم يُعلن عدد الحلقات بعد.</p>'}</div>
     ${m.characters.nodes.length ? `<h2>الشخصيات</h2><div class="row">${chars}</div>` : ""}
     <p class="note"><a class="btn" href="#/">رجوع</a></p>`;
+  const q = document.getElementById("epq");
+  const go = () => { const v = parseInt(q.value, 10); if (v >= 1 && (!n || v <= n)) location.hash = "#/anime/" + id + "/ep/" + v; };
+  q.addEventListener("input", () => {
+    document.querySelectorAll(".epr").forEach(a => { a.style.display = !q.value || a.dataset.n.includes(q.value) ? "" : "none"; });
+  });
+  q.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+  document.getElementById("epgo").addEventListener("click", go);
 }
 
 // صفحة تشغيل حلقة داخل الموقع
 async function player(id, n) {
   app.innerHTML = '<p class="note">جارٍ التحميل...</p>';
   const m = (await gql(ANIME_Q, { id })).Media;
-  const url = ((await sources())[id] || {})[n];
+  let url = ((await sources())[id] || {})[n];
+  if (!url) {
+    app.innerHTML = '<p class="note">جارٍ البحث عن الحلقة في القنوات الرسمية...</p>';
+    const v = await findFree(id, m, n).catch(() => null);
+    if (v) url = "https://www.youtube.com/embed/" + v;
+  }
   const total = epCount(m);
   let box;
   if (url && /^https:\/\//.test(url)) {
