@@ -37,6 +37,12 @@ h2{font-size:18px;margin:20px 0 10px}
 .btn{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 14px;font-size:14px}
 .btn:hover{border-color:var(--accent)}
 .note{color:var(--mute);padding:20px 0}
+.eplist{display:grid;gap:10px}
+.epr{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}
+.epr:hover{border-color:var(--accent)}
+.epr img{width:110px;aspect-ratio:16/9;object-fit:cover;border-radius:8px}
+.epr > div{flex:1;min-width:0}
+.btn.play{background:var(--accent);color:#2a0f18;border-color:var(--accent);font-weight:700}
 .trailer{width:100%;max-width:640px;aspect-ratio:16/9;border:0;border-radius:12px;display:block}
 </style>
 </head>
@@ -102,56 +108,78 @@ async function home() {
     <div class="grid">${d.hot.media.map(m => card(m)).join("")}</div>`;
 }
 
-// صفحة الأنمي مع الحلقات
+// ملف مصادر الحلقات (اختياري) بجانب index.html: episodes.json
+async function sources() {
+  try { const r = await fetch("episodes.json", { cache: "no-store" }); return r.ok ? await r.json() : {}; }
+  catch (e) { return {}; }
+}
+
+const ANIME_Q = `
+  query ($id:Int){
+    Media(id:$id,type:ANIME){
+      title{romaji english native} coverImage{large} description(asHtml:false)
+      episodes status seasonYear genres trailer{id site} nextAiringEpisode{episode}
+      characters(sort:FAVOURITES_DESC, perPage:12){nodes{id name{full} image{large} favourites}}
+    }
+  }`;
+const epCount = m => m.episodes || (m.nextAiringEpisode ? m.nextAiringEpisode.episode - 1 : 0);
+const trailerBox = m => m.trailer && m.trailer.site === "youtube"
+  ? `<iframe class="trailer" src="https://www.youtube.com/embed/${esc(m.trailer.id)}" allowfullscreen loading="lazy"></iframe>` : "";
+
+// صفحة الأنمي: قائمة الحلقات + الشخصيات
 async function detail(id) {
   app.innerHTML = '<p class="note">جارٍ التحميل...</p>';
-  const d = await gql(`
-    query ($id:Int){
-      Media(id:$id,type:ANIME){
-        title{romaji english native} coverImage{large} description(asHtml:false)
-        episodes status seasonYear genres trailer{id site}
-        streamingEpisodes{title thumbnail url site}
-        externalLinks{site url type}
-      }
-    }`, { id });
-  const m = d.Media;
+  const m = (await gql(ANIME_Q, { id })).Media;
+  const src = (await sources())[id] || {};
+  const n = epCount(m);
   const desc = esc((m.description || "لا يوجد وصف.").replace(/<[^>]+>/g, " "));
-  const notCR = x => !/crunchyroll/i.test(x.site || "") && !/crunchyroll/i.test(x.url || "");
-  const eps = (m.streamingEpisodes || []).filter(notCR);
-  const watch = (m.externalLinks || []).filter(l => l.type === "STREAMING" && notCR(l));
-  const name = encodeURIComponent(m.title.english || m.title.romaji);
-  const free = [
-    { n: "Ani-One Asia (YouTube)", u: "https://www.youtube.com/results?search_query=" + name + "+Ani-One+Asia" },
-    { n: "Muse Asia (YouTube)", u: "https://www.youtube.com/results?search_query=" + name + "+Muse+Asia" },
-    { n: "Tubi", u: "https://tubitv.com/search/" + name },
-    { n: "Pluto TV", u: "https://www.google.com/search?q=site:pluto.tv+" + name },
-    { n: "RetroCrush", u: "https://www.google.com/search?q=site:retrocrush.tv+" + name }
-  ];
-  const trailer = m.trailer && m.trailer.site === "youtube"
-    ? `<h2>الإعلان التشويقي</h2><iframe class="trailer" src="https://www.youtube.com/embed/${esc(m.trailer.id)}" allowfullscreen loading="lazy"></iframe>` : "";
+  let rows = "";
+  for (let i = 1; i <= n; i++) {
+    rows += `<a class="epr" href="#/anime/${id}/ep/${i}">
+      <img loading="lazy" src="${esc(m.coverImage.large)}" alt="">
+      <div><b>الحلقة ${i}</b><div class="meta">${src[i] ? "متاحة" : "لا يوجد مصدر بعد"}</div></div>
+      <span class="btn play">شغّل الآن</span></a>`;
+  }
+  const chars = (m.characters.nodes || []).map(c => `
+    <div class="item"><img loading="lazy" src="${esc(c.image.large)}" alt="${esc(c.name.full)}">
+    <div class="t">${esc(c.name.full)}</div><div class="meta">♥ ${c.favourites}</div></div>`).join("");
   app.innerHTML = `
     <div class="hero">
       <img src="${esc(m.coverImage.large)}" alt="">
       <div class="info">
         <h1>${esc(title(m.title))}</h1>
-        <div class="meta">${[m.seasonYear, m.episodes ? m.episodes + " حلقة" : "", (m.genres || []).join("، ")].filter(Boolean).map(esc).join(" • ")}</div>
+        <div class="meta">${[m.seasonYear, n ? n + " حلقة" : "", (m.genres || []).join("، ")].filter(Boolean).map(esc).join(" • ")}</div>
         <p class="desc">${desc}</p>
       </div>
     </div>
-    <h2>مشاهدة مجانية وقانونية</h2>
-    <div class="links">${free.map(f => `<a class="btn" href="${esc(f.u)}" target="_blank" rel="noopener noreferrer">${esc(f.n)}</a>`).join("")}</div>
-    ${trailer}
     <h2>الحلقات</h2>
-    ${eps.length
-      ? `<div class="eps">${eps.map(e => `
-          <a class="ep" href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">
-            ${e.thumbnail ? `<img loading="lazy" src="${esc(e.thumbnail)}" alt="">` : ""}
-            <span>${esc(e.title)}<br><small style="color:var(--mute)">على ${esc(e.site)}</small></span>
-          </a>`).join("")}</div>`
-      : '<p class="note">لا توجد روابط حلقات مباشرة لهذا الأنمي. جرّب أماكن المشاهدة أدناه.</p>'}
-    ${watch.length ? `<h2>أماكن المشاهدة الرسمية</h2>
-      <div class="links">${watch.map(l => `<a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.site)}</a>`).join("")}</div>` : ""}
+    <div class="eplist">${rows || '<p class="note">لم يُعلن عدد الحلقات بعد.</p>'}</div>
+    ${m.characters.nodes.length ? `<h2>الشخصيات</h2><div class="row">${chars}</div>` : ""}
     <p class="note"><a class="btn" href="#/">رجوع</a></p>`;
+}
+
+// صفحة تشغيل حلقة داخل الموقع
+async function player(id, n) {
+  app.innerHTML = '<p class="note">جارٍ التحميل...</p>';
+  const m = (await gql(ANIME_Q, { id })).Media;
+  const url = ((await sources())[id] || {})[n];
+  const total = epCount(m);
+  let box;
+  if (url && /^https:\/\//.test(url)) {
+    box = /\.(mp4|webm)(\?|$)/i.test(url)
+      ? `<video class="trailer" controls src="${esc(url)}"></video>`
+      : `<iframe class="trailer" src="${esc(url)}" allowfullscreen></iframe>`;
+  } else {
+    box = `${trailerBox(m)}<p class="note">لا يوجد مصدر مرخّص لهذه الحلقة بعد، وهذا الإعلان التشويقي بدلاً منها.</p>`;
+  }
+  app.innerHTML = `
+    <h2>${esc(title(m.title))} - الحلقة ${n}</h2>
+    ${box}
+    <div class="links">
+      ${n > 1 ? `<a class="btn" href="#/anime/${id}/ep/${n - 1}">الحلقة السابقة</a>` : ""}
+      ${n < total ? `<a class="btn" href="#/anime/${id}/ep/${n + 1}">الحلقة التالية</a>` : ""}
+      <a class="btn" href="#/anime/${id}">كل الحلقات</a>
+    </div>`;
 }
 
 // البحث
@@ -169,7 +197,7 @@ async function search(text) {
 async function route() {
   const h = location.hash;
   try {
-    if (h.startsWith("#/anime/")) await detail(parseInt(h.split("/")[2], 10));
+    if (h.startsWith("#/anime/")) { const p = h.split("/"); const id = parseInt(p[2], 10); if (p[3] === "ep") await player(id, parseInt(p[4], 10)); else await detail(id); }
     else if (h.startsWith("#/search/")) await search(decodeURIComponent(h.slice(9)));
     else await home();
   } catch (e) {
