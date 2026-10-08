@@ -6,219 +6,267 @@
 <title>موقع الأنمي</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#15131d;--card:#1f1c2b;--line:#2f2b42;--text:#ece9f5;--mute:#9a95b3;--accent:#ff6f91}
+:root{--bg:#12050f;--card:rgba(255,255,255,.07);--line:rgba(255,255,255,.12);--text:#f1ecf4;--mute:#a79bb3;--accent:#e5103f}
 *{box-sizing:border-box;margin:0}
-body{font-family:'Tajawal',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+body{font-family:'Tajawal',system-ui,sans-serif;color:var(--text);line-height:1.6;min-height:100vh;padding-bottom:76px;background:linear-gradient(180deg,#2d0a17 0,#12050f 380px,#0d0619 100%) fixed var(--bg)}
 a{color:inherit;text-decoration:none}
-header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:center;padding:12px 16px}
-.logo{font-weight:800;font-size:20px;color:var(--accent);white-space:nowrap}
-#q{flex:1;min-width:0;background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 12px;font:inherit}
+header{position:sticky;top:0;z-index:5;background:rgba(10,3,10,.92);backdrop-filter:blur(8px);display:flex;gap:12px;align-items:center;padding:12px 16px}
+header b{font-size:18px;white-space:nowrap}
+#q{flex:1;min-width:0;background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:9px 12px;font:inherit}
 #q:focus{outline:2px solid var(--accent)}
-main{max-width:1000px;margin:0 auto;padding:16px}
-h2{font-size:18px;margin:20px 0 10px}
+main{max-width:1000px;margin:0 auto;padding:8px 16px}
+h2{font-size:17px;margin:22px 0 10px}
 .row{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity}
-.row .item{flex:0 0 130px;scroll-snap-align:start}
+.row .item{flex:0 0 140px;scroll-snap-align:start}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px}
-.item img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:10px;background:var(--card);display:block}
-.item .t{font-size:14px;margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.badge{display:inline-block;background:var(--accent);color:#2a0f18;font-size:12px;font-weight:700;border-radius:6px;padding:0 8px;margin-top:4px}
-.hero{display:flex;gap:16px;flex-wrap:wrap}
-.hero img{width:160px;border-radius:12px}
+.item{display:block}
+.pic{position:relative}
+.pic img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:12px;background:var(--card);display:block}
+.tag,.ep{position:absolute;top:6px;right:6px;font-size:11px;font-weight:700;border-radius:8px;padding:1px 8px;color:#fff}
+.tag.g{background:#22b45a}.tag.r{background:var(--accent)}.tag.y{background:#c98a10}
+.ep{top:auto;bottom:6px;right:auto;left:6px;background:rgba(0,0,0,.75)}
+.t{font-size:14px;margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{color:var(--mute);font-size:13px}
+.last{flex:0 0 250px!important;display:flex;gap:10px;background:var(--card);border-radius:12px;padding:8px;align-items:center}
+.last img{width:64px;aspect-ratio:2/3;object-fit:cover;border-radius:8px}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.tile{border-radius:16px;padding:20px 16px;font-weight:700;font-size:16px}
+.hero{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+.hero img{width:150px;border-radius:14px}
 .hero .info{flex:1;min-width:220px}
-.hero h1{font-size:24px}
-.meta{color:var(--mute);font-size:14px;margin:4px 0 10px}
-.desc{color:var(--mute);font-size:15px;max-width:70ch}
-.eps{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-.ep{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:block}
-.ep:hover{border-color:var(--accent)}
-.ep img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
-.ep span{display:block;padding:8px 10px;font-size:14px}
-.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.btn{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 14px;font-size:14px}
-.btn:hover{border-color:var(--accent)}
-.note{color:var(--mute);padding:20px 0}
-.eplist{display:grid;gap:10px}
-.epr{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}
-.epr:hover{border-color:var(--accent)}
-.epr img{width:110px;aspect-ratio:16/9;object-fit:cover;border-radius:8px}
-.epr > div{flex:1;min-width:0}
-.btn.play{background:var(--accent);color:#2a0f18;border-color:var(--accent);font-weight:700}
-.epsearch{display:flex;gap:8px;margin-bottom:12px}
+.hero h1{font-size:22px}
+.desc{color:var(--mute);font-size:15px;max-width:70ch;white-space:pre-line}
+.btn{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 16px;font:inherit;color:var(--text);cursor:pointer}
+.btn.play{background:var(--accent);border-color:var(--accent);font-weight:700}
+.bar{display:flex;gap:10px;margin:14px 0;align-items:stretch}
+.bar .play{flex:1;text-align:center;padding:11px}
+.tabs{display:flex;gap:8px;overflow-x:auto}
+.tabs .btn.on{background:#2a1260;border-color:#4b2aa0}
+.epsearch{display:flex;gap:8px;margin:12px 0}
 .epsearch input{flex:1;min-width:0;background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 12px;font:inherit}
-.epsearch input:focus{outline:2px solid var(--accent)}
-.epsearch button{color:var(--text);font:inherit;cursor:pointer}
-.trailer{width:100%;max-width:640px;aspect-ratio:16/9;border:0;border-radius:12px;display:block}
+.eplist{display:grid;gap:10px}
+.epr{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:12px;padding:8px}
+.epr:hover{outline:1px solid var(--accent)}
+.epr .th{position:relative;flex:0 0 120px}
+.epr img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:8px;display:block}
+.epr .th i{position:absolute;bottom:4px;left:6px;font-style:normal;font-size:12px;font-weight:700;text-shadow:0 0 4px #000}
+.epr>div:nth-child(2){flex:1;min-width:0}
+.chip{display:inline-block;background:var(--card);border-radius:10px;padding:4px 14px;margin:0 0 6px 6px;font-size:14px}
+.kv{margin:12px 0}.kv b{display:block;font-size:15px}.kv span{color:var(--mute);font-size:14px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.player{width:100%;max-width:720px;aspect-ratio:16/9;border:0;border-radius:14px;display:block;background:#000}
+.cov{max-width:240px;border-radius:14px;display:block}
+.note{color:var(--mute);padding:14px 0}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:6;display:flex;justify-content:space-around;background:linear-gradient(90deg,#3a0a18,#1c0b44);padding:8px 0}
+nav a{display:flex;flex-direction:column;align-items:center;font-size:12px;padding:4px 18px;border-radius:12px;color:var(--mute)}
+nav a span{font-size:20px}
+nav a.on{background:rgba(255,255,255,.14);color:#fff}
 </style>
 </head>
 <body>
-<header>
-  <a class="logo" href="#/">موقع الأنمي</a>
-  <input id="q" type="search" placeholder="ابحث عن أنمي...">
-</header>
+<header><b>موقع الأنمي</b><input id="q" type="search" placeholder="ابحث عن أنمي..."></header>
 <main id="app"></main>
+<nav>
+  <a href="#/" data-r="home"><span>🏠</span>الرئيسية</a>
+  <a href="#/list" data-r="list"><span>🔖</span>قائمتي</a>
+  <a href="#/genres" data-r="genres"><span>📚</span>الأنواع</a>
+</nav>
 
 <script>
 const API = "https://graphql.anilist.co";
-// ضع هنا مفتاح YouTube Data API (مجاني) ليبحث الموقع تلقائياً عن الحلقات في القنوات الرسمية
+// ضع هنا مفتاح YouTube Data API (مجاني) ليبحث الموقع عن الحلقات في القنوات الرسمية المجانية
 const YT_KEY = "";
-const FREE_HANDLES = ["@AniOneAsia", "@MuseAsia"];
+// القنوات الرسمية المجانية: [المعرّف على YouTube، كلمة يجب أن يحتويها اسم القناة للتحقق منها]
+const FREE_CHANNELS = [
+  ["@AniOneAsia", "ani one asia"], ["@AniOneIndonesia", "ani one indonesia"], ["@AniOnePhilippines", "ani one philippines"],
+  ["@AniOneThailand", "ani one thailand"], ["@AniOneVietnam", "ani one vietnam"],
+  ["@MuseAsia", "muse asia"], ["@MuseIndonesia", "muse indonesia"], ["@MuseMalaysia", "muse malaysia"],
+  ["@MuseThailand", "muse thailand"], ["@MuseVietnam", "muse vietnam"], ["@MusePhilippines", "muse philippines"],
+  ["@AnimeMadeByBilibili", "bilibili"], ["@Animelog", "animelog"], ["@GundamInfo", "gundam"], ["@VIZMedia", "viz"]
+];
+
 const app = document.getElementById("app");
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const title = t => t.english || t.romaji || t.native || "";
+const LS = {
+  get: (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch (e) { return d; } },
+  set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+const cached = (k, ttl) => { const c = LS.get(k, null); return c && Date.now() - c.t < ttl ? c : null; };
+const store = (k, d) => LS.set(k, { t: Date.now(), d });
+const loading = '<p class="note">جارٍ التحميل...</p>';
 
-// طلب GraphQL مع تخزين مؤقت 10 دقائق
 async function gql(query, variables = {}) {
   const key = "al:" + JSON.stringify([query, variables]);
-  try {
-    const c = JSON.parse(localStorage.getItem(key) || "null");
-    if (c && Date.now() - c.t < 600000) return c.d;
-  } catch (e) {}
-  const res = await fetch(API, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables })
-  });
+  const c = cached(key, 600000);
+  if (c) return c.d;
+  const res = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query, variables }) });
   if (!res.ok) throw new Error("تعذّر الاتصال بـ AniList (" + res.status + ")");
   const d = (await res.json()).data;
-  try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), d })); } catch (e) {}
+  store(key, d);
   return d;
 }
 
-const card = (m, badge) => `
-  <a class="item" href="#/anime/${m.id}">
-    <img loading="lazy" src="${esc(m.coverImage.large)}" alt="${esc(title(m.title))}">
-    <div class="t">${esc(title(m.title))}</div>
-    ${badge ? `<span class="badge">${badge}</span>` : ""}
-  </a>`;
+const F = "id title{romaji english} coverImage{large} status seasonYear averageScore";
+const ST = { RELEASING: ["يعرض حالياً", "g"], FINISHED: ["مكتملة", "r"], NOT_YET_RELEASED: ["قريباً", "y"] };
+const card = (m, ep) => { const s = ST[m.status]; return `
+  <a class="item" href="#/anime/${m.id}"><div class="pic"><img loading="lazy" src="${esc(m.coverImage.large)}" alt="">
+  ${s ? `<span class="tag ${s[1]}">${s[0]}</span>` : ""}${ep ? `<span class="ep">الحلقة ${ep}</span>` : ""}</div>
+  <div class="t">${esc(title(m.title))}</div>
+  <div class="meta">${m.averageScore ? "★ " + (m.averageScore / 10).toFixed(1) : ""} ${m.seasonYear || ""}</div></a>`; };
+const sec = (h, html, cls = "row") => html ? `<h2>${h}</h2><div class="${cls}">${html}</div>` : "";
+
+const GENRES = [["أكشن","Action","#e5541f"],["دراما","Drama","#f4a6c0"],["خيال","Fantasy","#8b6fe0"],["رعب","Horror","#8aa4b3"],["كوميديا","Comedy","#d9a21b"],["رومانسي","Romance","#d9467a"],["مغامرة","Adventure","#2e9d6a"],["غموض","Mystery","#3c78c9"],["خيال علمي","Sci-Fi","#27a7b8"],["رياضة","Sports","#7a9a2a"]];
+const tiles = list => `<div class="tiles">${list.map(g => `<a class="tile" style="background:${g[2]}" href="#/genre/${encodeURIComponent(g[1])}">${g[0]}</a>`).join("")}</div>`;
 
 // الصفحة الرئيسية
 async function home() {
-  app.innerHTML = '<p class="note">جارٍ التحميل...</p>';
-  const now = Math.floor(Date.now() / 1000);
+  app.innerHTML = loading;
+  const now = Math.floor(Date.now() / 1000), d0 = new Date();
   const d = await gql(`
-    query ($from:Int,$to:Int){
-      new: Page(perPage:20){
-        airingSchedules(airingAt_greater:$from, airingAt_lesser:$to, sort:TIME_DESC){
-          episode media{id title{romaji english} coverImage{large}}
-        }
-      }
-      hot: Page(perPage:24){
-        media(type:ANIME, sort:TRENDING_DESC){id title{romaji english} coverImage{large}}
-      }
-    }`, { from: now - 7 * 86400, to: now });
+    query($from:Int,$to:Int,$s:MediaSeason,$y:Int){
+      new:Page(perPage:25){airingSchedules(airingAt_greater:$from,airingAt_lesser:$to,sort:TIME_DESC){episode media{${F}}}}
+      season:Page(perPage:15){media(type:ANIME,season:$s,seasonYear:$y,sort:POPULARITY_DESC){${F}}}
+      hot:Page(perPage:15){media(type:ANIME,sort:TRENDING_DESC){${F}}}
+      fav:Page(perPage:15){media(type:ANIME,sort:FAVOURITES_DESC){${F}}}
+    }`, { from: now - 7 * 86400, to: now, s: ["WINTER","SPRING","SUMMER","FALL"][Math.floor(d0.getMonth() / 3)], y: d0.getFullYear() });
   const seen = new Set();
   const fresh = d.new.airingSchedules.filter(s => !seen.has(s.media.id) && seen.add(s.media.id));
-  app.innerHTML = `
-    <h2>حلقات جديدة</h2>
-    <div class="row">${fresh.map(s => card(s.media, "حلقة " + s.episode)).join("") || '<p class="note">لا توجد حلقات حديثة.</p>'}</div>
-    <h2>الأكثر رواجاً</h2>
-    <div class="grid">${d.hot.media.map(m => card(m)).join("")}</div>`;
+  const last = Object.values(LS.get("al:last", {})).sort((a, b) => b.t - a.t).slice(0, 8);
+  app.innerHTML =
+    sec("آخر المشاهدات", last.map(l => `<a class="item last" href="#/anime/${l.id}/ep/${l.ep}"><img src="${esc(l.img)}" alt=""><div><b>الحلقة ${l.ep}</b><div class="t">${esc(l.name)}</div></div></a>`).join("")) +
+    sec("الإصدارات الحديثة", fresh.map(s => card(s.media, s.episode)).join("")) +
+    sec("الأنواع الشائعة", tiles(GENRES.slice(0, 4)), "") +
+    sec("الرائج هذا الموسم", d.season.media.map(m => card(m)).join("")) +
+    sec("الأكثر رواجاً", d.hot.media.map(m => card(m)).join("")) +
+    sec("الأنمي الأكثر إعجاباً", d.fav.media.map(m => card(m)).join(""));
 }
 
+async function showList(heading, query, vars, pick) {
+  app.innerHTML = loading;
+  const d = await gql(query, vars);
+  const items = pick(d);
+  app.innerHTML = `<h2>${heading}</h2>` + (items.length ? `<div class="grid">${items.map(m => card(m)).join("")}</div>` : '<p class="note">لا توجد نتائج.</p>');
+}
+
+// ===== مصادر الحلقات المجانية الرسمية =====
 const ytGet = async (path, params) => {
   const r = await fetch("https://www.googleapis.com/youtube/v3/" + path + "?" + new URLSearchParams({ ...params, key: YT_KEY }));
   if (!r.ok) throw new Error("yt " + r.status);
   return r.json();
 };
-const cached = (k, ttl) => { try { const c = JSON.parse(localStorage.getItem(k) || "null"); if (c && Date.now() - c.t < ttl) return c; } catch (e) {} return null; };
-const store = (k, d) => { try { localStorage.setItem(k, JSON.stringify({ t: Date.now(), d })); } catch (e) {} };
 const norm = s => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-
 async function channelIds() {
-  const c = cached("al:chan", 7 * 864e5);
+  const c = cached("al:chan2", 7 * 864e5);
   if (c) return c.d;
   const ids = [];
-  for (const h of FREE_HANDLES) {
-    try { const d = await ytGet("channels", { part: "id", forHandle: h }); if (d.items && d.items[0]) ids.push(d.items[0].id); } catch (e) {}
+  for (const [h, word] of FREE_CHANNELS) {
+    try {
+      const d = await ytGet("channels", { part: "snippet", forHandle: h });
+      const ch = d.items && d.items[0];
+      // لا نقبل القناة إلا إذا طابق اسمها المتوقع، حتى لا نربط بقناة غير رسمية
+      if (ch && norm(ch.snippet.title).includes(word)) ids.push(ch.id);
+    } catch (e) {}
   }
-  if (ids.length) store("al:chan", ids);
+  if (ids.length) store("al:chan2", ids);
   return ids;
 }
-
-// يبحث عن الحلقة في القنوات الرسمية المجانية فقط، ويرجع معرّف الفيديو أو null
 async function findFree(id, m, n) {
   if (!YT_KEY) return null;
-  const key = "al:free:" + id + ":" + n;
-  const c = cached(key, 3 * 864e5);
+  const key = "al:free:" + id + ":" + n, c = cached(key, 3 * 864e5);
   if (c) return c.d || null;
   const ids = await channelIds();
   if (!ids.length) return null;
   const names = [m.title.english, m.title.romaji].filter(Boolean).map(t => norm(t).slice(0, 25));
   const epRe = new RegExp("\\b(episode|ep)\\s*0*" + n + "\\b");
-  const d = await ytGet("search", { part: "snippet", type: "video", videoEmbeddable: "true", maxResults: "25", q: (m.title.english || m.title.romaji) + " episode " + n });
-  const hit = (d.items || []).find(v => {
-    const t = norm(v.snippet.title);
-    return ids.includes(v.snippet.channelId) && names.some(x => x && t.includes(x)) && epRe.test(t);
-  });
+  const d = await ytGet("search", { part: "snippet", type: "video", videoEmbeddable: "true", maxResults: "50", q: (m.title.english || m.title.romaji) + " episode " + n });
+  const hit = (d.items || []).find(v => { const t = norm(v.snippet.title); return ids.includes(v.snippet.channelId) && names.some(x => x && t.includes(x)) && epRe.test(t); });
   const vid = hit ? hit.id.videoId : "";
   store(key, vid);
   return vid || null;
 }
-
-// ملف مصادر الحلقات (اختياري) بجانب index.html: episodes.json
 async function sources() {
-  try { const r = await fetch("episodes.json", { cache: "no-store" }); return r.ok ? await r.json() : {}; }
-  catch (e) { return {}; }
+  try { const r = await fetch("episodes.json", { cache: "no-store" }); return r.ok ? await r.json() : {}; } catch (e) { return {}; }
 }
 
 const ANIME_Q = `
-  query ($id:Int){
-    Media(id:$id,type:ANIME){
-      title{romaji english native} coverImage{large} description(asHtml:false)
-      episodes status seasonYear genres trailer{id site} nextAiringEpisode{episode}
-      characters(sort:FAVOURITES_DESC, perPage:12){nodes{id name{full} image{large} favourites}}
-    }
-  }`;
+  query ($id:Int){ Media(id:$id,type:ANIME){
+    id title{romaji english native} coverImage{large} bannerImage description(asHtml:false)
+    episodes duration status seasonYear averageScore genres trailer{id site} nextAiringEpisode{episode}
+    studios(isMain:true){nodes{name}} externalLinks{site url type}
+    characters(sort:FAVOURITES_DESC, perPage:12){nodes{id name{full} image{large} favourites}}
+  } }`;
 const epCount = m => m.episodes || (m.nextAiringEpisode ? m.nextAiringEpisode.episode - 1 : 0);
 const trailerBox = m => m.trailer && m.trailer.site === "youtube"
-  ? `<iframe class="trailer" src="https://www.youtube.com/embed/${esc(m.trailer.id)}" allowfullscreen loading="lazy"></iframe>` : "";
+  ? `<iframe class="player" src="https://www.youtube.com/embed/${esc(m.trailer.id)}" allowfullscreen loading="lazy"></iframe>` : "";
 
-// صفحة الأنمي: قائمة الحلقات + الشخصيات
+// صفحة الأنمي
 async function detail(id) {
-  app.innerHTML = '<p class="note">جارٍ التحميل...</p>';
+  app.innerHTML = loading;
   const m = (await gql(ANIME_Q, { id })).Media;
   const src = (await sources())[id] || {};
-  const n = epCount(m);
-  const desc = esc((m.description || "لا يوجد وصف.").replace(/<[^>]+>/g, " "));
+  const n = epCount(m), s = ST[m.status];
+  const saved = LS.get("al:list", []).includes(id);
+  const startEp = (LS.get("al:last", {})[id] || {}).ep || 1;
   let rows = "";
   for (let i = 1; i <= n; i++) {
     rows += `<a class="epr" data-n="${i}" href="#/anime/${id}/ep/${i}">
-      <img loading="lazy" src="${esc(m.coverImage.large)}" alt="">
-      <div><b>الحلقة ${i}</b><div class="meta">${src[i] ? "متاحة" : "اضغط للتشغيل"}</div></div>
+      <div class="th"><img loading="lazy" src="${esc(m.coverImage.large)}" alt="">${m.duration ? `<i>${m.duration}:00</i>` : ""}</div>
+      <div><b>الحلقة ${String(i).padStart(2, "0")}</b><div class="meta">${src[i] ? "متاحة" : ""}</div></div>
       <span class="btn play">شغّل الآن</span></a>`;
   }
-  const chars = (m.characters.nodes || []).map(c => `
-    <div class="item"><img loading="lazy" src="${esc(c.image.large)}" alt="${esc(c.name.full)}">
+  const chars = m.characters.nodes.map(c => `
+    <div class="item"><div class="pic"><img loading="lazy" src="${esc(c.image.large)}" alt=""></div>
     <div class="t">${esc(c.name.full)}</div><div class="meta">♥ ${c.favourites}</div></div>`).join("");
+  const desc = esc((m.description || "لا يوجد وصف.").replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, ""));
+  const kv = (k, v) => v ? `<div class="kv"><b>${k}</b><span>${esc(v)}</span></div>` : "";
   app.innerHTML = `
     <div class="hero">
       <img src="${esc(m.coverImage.large)}" alt="">
       <div class="info">
         <h1>${esc(title(m.title))}</h1>
-        <div class="meta">${[m.seasonYear, n ? n + " حلقة" : "", (m.genres || []).join("، ")].filter(Boolean).map(esc).join(" • ")}</div>
-        <p class="desc">${desc}</p>
+        <div class="meta">${[m.seasonYear, n ? n + " حلقة" : "", m.averageScore ? "★ " + (m.averageScore / 10).toFixed(1) : ""].filter(Boolean).join(" • ")}</div>
+        ${s ? `<span class="tag g" style="position:static;display:inline-block;margin-top:6px;background:${s[1] === "g" ? "#22b45a" : "var(--accent)"}">${s[0]}</span>` : ""}
       </div>
     </div>
-    <h2>الحلقات</h2>
-    <div class="epsearch">
-      <input id="epq" type="number" min="1" inputmode="numeric" placeholder="اكتب رقم الحلقة">
-      <button class="btn" id="epgo">اذهب</button>
+    <div class="bar">
+      <a class="btn play" href="#/anime/${id}/ep/${startEp}">▶ شغّل الآن</a>
+      <button class="btn" id="bm">${saved ? "✔" : "🔖"}</button>
     </div>
-    <div class="eplist">${rows || '<p class="note">لم يُعلن عدد الحلقات بعد.</p>'}</div>
-    ${m.characters.nodes.length ? `<h2>الشخصيات</h2><div class="row">${chars}</div>` : ""}
+    <div class="tabs"><button class="btn on" data-tab="eps">الحلقات</button><button class="btn" data-tab="info">التفاصيل</button></div>
+    <div id="eps">
+      <div class="epsearch"><input id="epq" type="number" min="1" inputmode="numeric" placeholder="اكتب رقم الحلقة"><button class="btn" id="epgo">اذهب</button></div>
+      <div class="eplist">${rows || '<p class="note">لم يُعلن عدد الحلقات بعد.</p>'}</div>
+    </div>
+    <div id="info" hidden>
+      ${kv("عنوان", m.title.romaji)}${kv("عنوان بديل", m.title.english)}${kv("العنوان الأصلي", m.title.native)}
+      <div class="kv"><b>القصة</b><p class="desc">${desc}</p></div>
+      <div class="kv"><b>الأنواع</b>${(m.genres || []).map(g => `<span class="chip">${esc(g)}</span>`).join("")}</div>
+      ${kv("الاستوديوهات", m.studios.nodes.map(x => x.name).join("، "))}
+    </div>
+    ${sec("الشخصيات", chars)}
     <p class="note"><a class="btn" href="#/">رجوع</a></p>`;
+  document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("[data-tab]").forEach(x => x.classList.toggle("on", x === b));
+    document.getElementById("eps").hidden = b.dataset.tab !== "eps";
+    document.getElementById("info").hidden = b.dataset.tab !== "info";
+  }));
+  document.getElementById("bm").addEventListener("click", e => {
+    let l = LS.get("al:list", []);
+    l = l.includes(id) ? l.filter(x => x !== id) : [id, ...l];
+    LS.set("al:list", l);
+    e.target.textContent = l.includes(id) ? "✔" : "🔖";
+  });
   const q = document.getElementById("epq");
   const go = () => { const v = parseInt(q.value, 10); if (v >= 1 && (!n || v <= n)) location.hash = "#/anime/" + id + "/ep/" + v; };
-  q.addEventListener("input", () => {
-    document.querySelectorAll(".epr").forEach(a => { a.style.display = !q.value || a.dataset.n.includes(q.value) ? "" : "none"; });
-  });
+  q.addEventListener("input", () => document.querySelectorAll(".epr").forEach(a => { a.style.display = !q.value || a.dataset.n.includes(q.value) ? "" : "none"; }));
   q.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
   document.getElementById("epgo").addEventListener("click", go);
 }
 
-// صفحة تشغيل حلقة داخل الموقع
+// تشغيل حلقة داخل الموقع
 async function player(id, n) {
-  app.innerHTML = '<p class="note">جارٍ التحميل...</p>';
+  app.innerHTML = loading;
   const m = (await gql(ANIME_Q, { id })).Media;
   let url = ((await sources())[id] || {})[n];
   if (!url) {
@@ -227,17 +275,20 @@ async function player(id, n) {
     if (v) url = "https://www.youtube.com/embed/" + v;
   }
   const total = epCount(m);
+  const L = LS.get("al:last", {});
+  L[id] = { id, ep: n, name: title(m.title), img: m.coverImage.large, t: Date.now() };
+  LS.set("al:last", L);
   let box;
   if (url && /^https:\/\//.test(url)) {
-    box = /\.(mp4|webm)(\?|$)/i.test(url)
-      ? `<video class="trailer" controls src="${esc(url)}"></video>`
-      : `<iframe class="trailer" src="${esc(url)}" allowfullscreen></iframe>`;
+    box = /\.(mp4|webm)(\?|$)/i.test(url) ? `<video class="player" controls src="${esc(url)}"></video>` : `<iframe class="player" src="${esc(url)}" allowfullscreen></iframe>`;
   } else {
-    box = `${trailerBox(m)}<p class="note">لا يوجد مصدر مرخّص لهذه الحلقة بعد، وهذا الإعلان التشويقي بدلاً منها.</p>`;
+    const off = (m.externalLinks || []).filter(l => l.type === "STREAMING" && !/crunchyroll/i.test(l.site + l.url));
+    box = (trailerBox(m) || `<img class="cov" src="${esc(m.coverImage.large)}" alt="">`) +
+      `<p class="note">هذه الحلقة غير متوفرة في أي مصدر مجاني رسمي، فهذا الأنمي مرخّص غالباً لمنصات مدفوعة، والمعروض هنا مجرد إعلان أو غلاف.</p>` +
+      (off.length ? `<div class="links">${off.map(l => `<a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.site)}</a>`).join("")}</div>` : "");
   }
   app.innerHTML = `
-    <h2>${esc(title(m.title))} - الحلقة ${n}</h2>
-    ${box}
+    <h2>${esc(title(m.title))} - الحلقة ${n}</h2>${box}
     <div class="links">
       ${n > 1 ? `<a class="btn" href="#/anime/${id}/ep/${n - 1}">الحلقة السابقة</a>` : ""}
       ${n < total ? `<a class="btn" href="#/anime/${id}/ep/${n + 1}">الحلقة التالية</a>` : ""}
@@ -245,23 +296,16 @@ async function player(id, n) {
     </div>`;
 }
 
-// البحث
-async function search(text) {
-  app.innerHTML = '<p class="note">جارٍ البحث...</p>';
-  const d = await gql(`
-    query ($s:String){
-      Page(perPage:30){media(type:ANIME, search:$s){id title{romaji english} coverImage{large}}}
-    }`, { s: text });
-  app.innerHTML = `<h2>نتائج البحث عن «${esc(text)}»</h2>
-    <div class="grid">${d.Page.media.map(m => card(m)).join("") || '<p class="note">لا توجد نتائج.</p>'}</div>`;
-}
-
 // التوجيه
 async function route() {
-  const h = location.hash;
+  const h = location.hash, p = h.split("/");
+  document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.dataset.r === (h.startsWith("#/list") ? "list" : h.startsWith("#/genre") ? "genres" : h === "" || h === "#/" ? "home" : "")));
   try {
-    if (h.startsWith("#/anime/")) { const p = h.split("/"); const id = parseInt(p[2], 10); if (p[3] === "ep") await player(id, parseInt(p[4], 10)); else await detail(id); }
-    else if (h.startsWith("#/search/")) await search(decodeURIComponent(h.slice(9)));
+    if (h.startsWith("#/anime/")) { const id = parseInt(p[2], 10); if (p[3] === "ep") await player(id, parseInt(p[4], 10)); else await detail(id); }
+    else if (h.startsWith("#/search/")) { const s = decodeURIComponent(h.slice(9)); await showList(`نتائج البحث عن «${esc(s)}»`, `query($s:String){Page(perPage:30){media(type:ANIME,search:$s){${F}}}}`, { s }, d => d.Page.media); }
+    else if (h.startsWith("#/genre/")) { const g = decodeURIComponent(p[2]); await showList(esc(g), `query($g:String){Page(perPage:30){media(type:ANIME,genre:$g,sort:POPULARITY_DESC){${F}}}}`, { g }, d => d.Page.media); }
+    else if (h === "#/genres") app.innerHTML = "<h2>الأنواع</h2>" + tiles(GENRES);
+    else if (h === "#/list") { const ids = LS.get("al:list", []); if (!ids.length) app.innerHTML = '<h2>قائمتي</h2><p class="note">لم تحفظ أي أنمي بعد. اضغط 🔖 في صفحة أي أنمي.</p>'; else await showList("قائمتي", `query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:ANIME){${F}}}}`, { ids }, d => d.Page.media); }
     else await home();
   } catch (e) {
     app.innerHTML = `<p class="note">حدث خطأ: ${esc(e.message)}. أعد المحاولة بعد قليل.</p>`;
