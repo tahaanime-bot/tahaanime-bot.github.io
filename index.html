@@ -37,6 +37,7 @@ h2{font-size:18px;margin:20px 0 10px}
 .btn{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 14px;font-size:14px}
 .btn:hover{border-color:var(--accent)}
 .note{color:var(--mute);padding:20px 0}
+.trailer{width:100%;max-width:640px;aspect-ratio:16/9;border:0;border-radius:12px;display:block}
 </style>
 </head>
 <body>
@@ -108,15 +109,26 @@ async function detail(id) {
     query ($id:Int){
       Media(id:$id,type:ANIME){
         title{romaji english native} coverImage{large} description(asHtml:false)
-        episodes status seasonYear genres
+        episodes status seasonYear genres trailer{id site}
         streamingEpisodes{title thumbnail url site}
         externalLinks{site url type}
       }
     }`, { id });
   const m = d.Media;
   const desc = esc((m.description || "لا يوجد وصف.").replace(/<[^>]+>/g, " "));
-  const eps = m.streamingEpisodes || [];
-  const watch = (m.externalLinks || []).filter(l => l.type === "STREAMING");
+  const notCR = x => !/crunchyroll/i.test(x.site || "") && !/crunchyroll/i.test(x.url || "");
+  const eps = (m.streamingEpisodes || []).filter(notCR);
+  const watch = (m.externalLinks || []).filter(l => l.type === "STREAMING" && notCR(l));
+  const name = encodeURIComponent(m.title.english || m.title.romaji);
+  const free = [
+    { n: "Ani-One Asia (YouTube)", u: "https://www.youtube.com/results?search_query=" + name + "+Ani-One+Asia" },
+    { n: "Muse Asia (YouTube)", u: "https://www.youtube.com/results?search_query=" + name + "+Muse+Asia" },
+    { n: "Tubi", u: "https://tubitv.com/search/" + name },
+    { n: "Pluto TV", u: "https://www.google.com/search?q=site:pluto.tv+" + name },
+    { n: "RetroCrush", u: "https://www.google.com/search?q=site:retrocrush.tv+" + name }
+  ];
+  const trailer = m.trailer && m.trailer.site === "youtube"
+    ? `<h2>الإعلان التشويقي</h2><iframe class="trailer" src="https://www.youtube.com/embed/${esc(m.trailer.id)}" allowfullscreen loading="lazy"></iframe>` : "";
   app.innerHTML = `
     <div class="hero">
       <img src="${esc(m.coverImage.large)}" alt="">
@@ -126,6 +138,9 @@ async function detail(id) {
         <p class="desc">${desc}</p>
       </div>
     </div>
+    <h2>مشاهدة مجانية وقانونية</h2>
+    <div class="links">${free.map(f => `<a class="btn" href="${esc(f.u)}" target="_blank" rel="noopener noreferrer">${esc(f.n)}</a>`).join("")}</div>
+    ${trailer}
     <h2>الحلقات</h2>
     ${eps.length
       ? `<div class="eps">${eps.map(e => `
