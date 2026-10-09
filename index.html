@@ -57,20 +57,21 @@ h2{font-size:17px;margin:22px 0 10px}
 .player{width:100%;max-width:720px;aspect-ratio:16/9;border:0;border-radius:14px;display:block;background:#000}
 .cov{max-width:240px;border-radius:14px;display:block}
 .note{color:var(--mute);padding:14px 0}
+footer{max-width:1000px;margin:24px auto 0;padding:16px;text-align:center;color:var(--mute);font-size:13px;border-top:1px solid var(--line)}
+footer a{text-decoration:underline}
+.pol{max-width:70ch}.pol p{color:var(--mute);margin:10px 0}
+.menu{display:grid;gap:10px;margin-top:10px}.menu .btn{display:block}
 nav{position:fixed;bottom:0;left:0;right:0;z-index:6;display:flex;justify-content:space-around;background:linear-gradient(90deg,#3a0a18,#1c0b44);padding:8px 0}
-nav a{display:flex;flex-direction:column;align-items:center;font-size:12px;padding:4px 18px;border-radius:12px;color:var(--mute)}
+nav a{display:flex;flex-direction:column;align-items:center;font-size:12px;padding:4px 12px;border-radius:12px;color:var(--mute)}
 nav a span{font-size:20px}
 nav a.on{background:rgba(255,255,255,.14);color:#fff}
 </style>
 </head>
 <body>
-<header><b>موقع الأنمي</b><input id="q" type="search" placeholder="ابحث عن أنمي..."></header>
+<header><b id="brand"></b><input id="q" type="search"></header>
 <main id="app"></main>
-<nav>
-  <a href="#/" data-r="home"><span>🏠</span>الرئيسية</a>
-  <a href="#/list" data-r="list"><span>🔖</span>قائمتي</a>
-  <a href="#/genres" data-r="genres"><span>📚</span>الأنواع</a>
-</nav>
+<footer id="foot"></footer>
+<nav id="nav"></nav>
 
 <script>
 const API = "https://graphql.anilist.co";
@@ -296,20 +297,109 @@ async function player(id, n) {
     </div>`;
 }
 
+// ===== اللغة، الصفحات الإضافية، حقوق النشر =====
+const OWNER = "اسمك هنا"; // ضع اسمك هنا ليظهر في حقوق النشر أسفل الموقع
+let lang = LS.get("al:lang", "ar");
+const DICT = {
+  "موقع الأنمي":"Anime Site","الرئيسية":"Home","قائمتي":"My List","الأنواع":"Genres","المزيد":"More",
+  "ابحث عن أنمي...":"Search anime...","اكتب رقم الحلقة":"Episode number","اذهب":"Go",
+  "آخر المشاهدات":"Continue watching","الإصدارات الحديثة":"New releases","الأنواع الشائعة":"Popular genres",
+  "الرائج هذا الموسم":"Trending this season","الأكثر رواجاً":"Most popular","الأنمي الأكثر إعجاباً":"Most liked anime",
+  "شغّل الآن":"Play now","▶ شغّل الآن":"▶ Play now","الحلقات":"Episodes","التفاصيل":"Details","الشخصيات":"Characters",
+  "رجوع":"Back","كل الحلقات":"All episodes","الحلقة السابقة":"Previous episode","الحلقة التالية":"Next episode",
+  "عنوان":"Title","عنوان بديل":"Alternative title","العنوان الأصلي":"Original title","القصة":"Story","الاستوديوهات":"Studios",
+  "يعرض حالياً":"Airing","مكتملة":"Completed","قريباً":"Upcoming","متاحة":"Available","لا توجد نتائج.":"No results.",
+  "جارٍ التحميل...":"Loading...","لا يوجد وصف.":"No description.","لم يُعلن عدد الحلقات بعد.":"Episode count not announced yet.",
+  "لم تحفظ أي أنمي بعد. اضغط 🔖 في صفحة أي أنمي.":"Nothing saved yet. Tap 🔖 on any anime page.",
+  "هذه الحلقة غير متوفرة في أي مصدر مجاني رسمي، فهذا الأنمي مرخّص غالباً لمنصات مدفوعة، والمعروض هنا مجرد إعلان أو غلاف.":"This episode isn't available from any official free source; this anime is most likely licensed to paid platforms, so only a trailer or cover is shown.",
+  "أكشن":"Action","دراما":"Drama","خيال":"Fantasy","رعب":"Horror","كوميديا":"Comedy","رومانسي":"Romance","مغامرة":"Adventure","غموض":"Mystery","خيال علمي":"Sci-Fi","رياضة":"Sports",
+  "اللغة":"Language","سياسة الخصوصية":"Privacy Policy","شروط الاستخدام":"Terms of Use","عن الموقع":"About"
+};
+const tr = x => (lang === "en" && DICT[x]) || x;
+const PAGES = {
+  privacy: { ar: ["سياسة الخصوصية", [
+    "لا يطلب هذا الموقع إنشاء حساب، ولا يجمع أي بيانات شخصية على خوادمه.",
+    "يحفظ الموقع في متصفحك فقط (التخزين المحلي): قائمتك المحفوظة، وآخر ما شاهدته، ولغتك، ونتائج مؤقتة لتسريع التصفح. يمكنك حذفها بمسح بيانات الموقع من المتصفح.",
+    "تُجلب البيانات والصور من AniList، وقد تُضمَّن فيديوهات من YouTube. هذه جهات خارجية قد تستقبل عنوان IP وتستخدم ملفات تعريف الارتباط وفق سياساتها الخاصة.",
+    "قد تتغير هذه السياسة، ويسري أي تعديل فور نشره في هذه الصفحة."]],
+    en: ["Privacy Policy", [
+    "This site doesn't require an account and doesn't collect personal data on its servers.",
+    "The site stores the following only in your browser (local storage): your saved list, what you watched last, your language, and temporary results that speed up browsing. You can delete them by clearing the site's data in your browser.",
+    "Data and images come from AniList, and videos may be embedded from YouTube. These are third parties that may receive your IP address and use cookies under their own policies.",
+    "This policy may change, and any change takes effect once published on this page."]] },
+  terms: { ar: ["شروط الاستخدام", [
+    "هذا الموقع للتعريف بالأنمي ومتابعة مواعيد عرضه وحفظ قوائم المتابعة.",
+    "لا يستضيف الموقع أي فيديو. تُعرض الحلقات المتاحة من القنوات الرسمية على YouTube أو من مصادر يملك صاحب الموقع حقها، وتبقى حقوقها لأصحابها.",
+    "أسماء الأنمي وصوره وبياناته ملك لأصحابها، والبيانات مصدرها AniList.",
+    "يُقدَّم الموقع كما هو، دون ضمان للتوفر أو لدقة المعلومات.",
+    "لإزالة محتوى أو الإبلاغ عن مخالفة، تواصل مع صاحب الموقع."]],
+    en: ["Terms of Use", [
+    "This site is for discovering anime, following release schedules and saving watch lists.",
+    "The site hosts no video. Available episodes are shown from official YouTube channels or from sources the site owner has the rights to, and the rights remain with their owners.",
+    "Anime titles, images and data belong to their owners; the data comes from AniList.",
+    "The site is provided as is, with no guarantee of availability or accuracy.",
+    "To request removal of content or report a violation, contact the site owner."]] },
+  about: { ar: ["عن الموقع", ["موقع لتصفح الأنمي ومتابعة الحلقات الجديدة، يعتمد على بيانات AniList.", "© " + OWNER]],
+    en: ["About", ["A site for browsing anime and following new episodes, powered by AniList data.", "© " + OWNER]] }
+};
+
+function renderChrome() {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "en" ? "ltr" : "rtl";
+  document.getElementById("brand").textContent = tr("موقع الأنمي");
+  document.getElementById("q").placeholder = tr("ابحث عن أنمي...");
+  document.getElementById("nav").innerHTML = [["home","#/","🏠","الرئيسية"],["list","#/list","🔖","قائمتي"],["genres","#/genres","📚","الأنواع"],["more","#/more","⚙️","المزيد"]]
+    .map(([r, h, i, n]) => `<a href="${h}" data-r="${r}"><span>${i}</span>${tr(n)}</a>`).join("");
+  const y = new Date().getFullYear(), al = '<a href="https://anilist.co" target="_blank" rel="noopener noreferrer">AniList</a>';
+  document.getElementById("foot").innerHTML = lang === "en"
+    ? `© ${y} ${esc(OWNER)}. All rights reserved for the site. Anime names, images and data belong to their owners; data from ${al}.`
+    : `© ${y} ${esc(OWNER)}. جميع الحقوق محفوظة للموقع. أسماء الأنمي وصوره وبياناته لأصحابها، والبيانات من ${al}.`;
+}
+
+function applyLang() {
+  if (lang !== "en") return;
+  const w = document.createTreeWalker(app, NodeFilter.SHOW_TEXT), nodes = [];
+  while (w.nextNode()) nodes.push(w.currentNode);
+  nodes.forEach(n => {
+    const raw = n.nodeValue, tx = raw.trim();
+    if (!tx) return;
+    n.nodeValue = DICT[tx] ? raw.replace(tx, DICT[tx])
+      : raw.replace(/الحلقة\s*0*(\d+)/g, "Episode $1").replace(/(\d+) حلقة/g, "$1 episodes")
+          .replace("نتائج البحث عن", "Search results for").replace("حدث خطأ:", "Error:").replace("أعد المحاولة بعد قليل.", "Try again shortly.");
+  });
+  app.querySelectorAll("input[placeholder]").forEach(i => { i.placeholder = DICT[i.placeholder] || i.placeholder; });
+}
+
+function more(page) {
+  if (page === "more") {
+    app.innerHTML = `<h2>${tr("المزيد")}</h2>
+      <h2>${tr("اللغة")}</h2>
+      <div class="links"><button class="btn${lang === "ar" ? " play" : ""}" data-lang="ar">العربية</button><button class="btn${lang === "en" ? " play" : ""}" data-lang="en">English</button></div>
+      <div class="menu"><a class="btn" href="#/privacy">${tr("سياسة الخصوصية")}</a><a class="btn" href="#/terms">${tr("شروط الاستخدام")}</a><a class="btn" href="#/about">${tr("عن الموقع")}</a></div>`;
+    app.querySelectorAll("[data-lang]").forEach(b => b.addEventListener("click", () => { lang = b.dataset.lang; LS.set("al:lang", lang); renderChrome(); route(); }));
+  } else {
+    const [h, ps] = PAGES[page][lang];
+    app.innerHTML = `<div class="pol"><h2>${esc(h)}</h2>${ps.map(x => `<p>${esc(x)}</p>`).join("")}</div><p class="note"><a class="btn" href="#/more">${lang === "en" ? "Back" : "رجوع"}</a></p>`;
+  }
+}
+
 // التوجيه
 async function route() {
   const h = location.hash, p = h.split("/");
-  document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.dataset.r === (h.startsWith("#/list") ? "list" : h.startsWith("#/genre") ? "genres" : h === "" || h === "#/" ? "home" : "")));
+  const r = h.startsWith("#/list") ? "list" : h.startsWith("#/genre") ? "genres" : ["#/more","#/privacy","#/terms","#/about"].includes(h) ? "more" : (h === "" || h === "#/") ? "home" : "";
+  document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.dataset.r === r));
   try {
     if (h.startsWith("#/anime/")) { const id = parseInt(p[2], 10); if (p[3] === "ep") await player(id, parseInt(p[4], 10)); else await detail(id); }
     else if (h.startsWith("#/search/")) { const s = decodeURIComponent(h.slice(9)); await showList(`نتائج البحث عن «${esc(s)}»`, `query($s:String){Page(perPage:30){media(type:ANIME,search:$s){${F}}}}`, { s }, d => d.Page.media); }
     else if (h.startsWith("#/genre/")) { const g = decodeURIComponent(p[2]); await showList(esc(g), `query($g:String){Page(perPage:30){media(type:ANIME,genre:$g,sort:POPULARITY_DESC){${F}}}}`, { g }, d => d.Page.media); }
     else if (h === "#/genres") app.innerHTML = "<h2>الأنواع</h2>" + tiles(GENRES);
     else if (h === "#/list") { const ids = LS.get("al:list", []); if (!ids.length) app.innerHTML = '<h2>قائمتي</h2><p class="note">لم تحفظ أي أنمي بعد. اضغط 🔖 في صفحة أي أنمي.</p>'; else await showList("قائمتي", `query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:ANIME){${F}}}}`, { ids }, d => d.Page.media); }
+    else if (["#/more","#/privacy","#/terms","#/about"].includes(h)) more(h.slice(2));
     else await home();
   } catch (e) {
     app.innerHTML = `<p class="note">حدث خطأ: ${esc(e.message)}. أعد المحاولة بعد قليل.</p>`;
   }
+  applyLang();
   window.scrollTo(0, 0);
 }
 window.addEventListener("hashchange", route);
@@ -317,6 +407,7 @@ document.getElementById("q").addEventListener("keydown", e => {
   const v = e.target.value.trim();
   if (e.key === "Enter" && v) location.hash = "#/search/" + encodeURIComponent(v);
 });
+renderChrome();
 route();
 </script>
 </body>
