@@ -83,7 +83,9 @@ const FREE_CHANNELS = [
   ["@AniOneThailand", "ani one thailand"], ["@AniOneVietnam", "ani one vietnam"],
   ["@MuseAsia", "muse asia"], ["@MuseIndonesia", "muse indonesia"], ["@MuseMalaysia", "muse malaysia"],
   ["@MuseThailand", "muse thailand"], ["@MuseVietnam", "muse vietnam"], ["@MusePhilippines", "muse philippines"],
-  ["@AnimeMadeByBilibili", "bilibili"], ["@Animelog", "animelog"], ["@GundamInfo", "gundam"], ["@VIZMedia", "viz"]
+  ["@AnimeMadeByBilibili", "bilibili"], ["@Animelog", "animelog"], ["@GundamInfo", "gundam"], ["@VIZMedia", "viz"],
+  // لإضافة قناة رسمية جديدة: ["@معرّف_القناة", "كلمة من اسمها بحروف صغيرة"]
+  ["@ToeiAnimationInc", "toei animation"], ["@Pokemon", "pok"], ["@Spacetoon", "spacetoon"]
 ];
 
 const app = document.getElementById("app");
@@ -298,7 +300,7 @@ async function player(id, n) {
 }
 
 // ===== اللغة، الصفحات الإضافية، حقوق النشر =====
-const OWNER = "اسمك هنا"; // ضع اسمك هنا ليظهر في حقوق النشر أسفل الموقع
+const OWNER = "محمد طه براجح (Mohamed Tah Berrajeh)"; // يظهر في حقوق النشر أسفل الموقع
 let lang = LS.get("al:lang", "ar");
 const DICT = {
   "موقع الأنمي":"Anime Site","الرئيسية":"Home","قائمتي":"My List","الأنواع":"Genres","المزيد":"More",
@@ -352,8 +354,8 @@ function renderChrome() {
     .map(([r, h, i, n]) => `<a href="${h}" data-r="${r}"><span>${i}</span>${tr(n)}</a>`).join("");
   const y = new Date().getFullYear(), al = '<a href="https://anilist.co" target="_blank" rel="noopener noreferrer">AniList</a>';
   document.getElementById("foot").innerHTML = lang === "en"
-    ? `© ${y} ${esc(OWNER)}. All rights reserved for the site. Anime names, images and data belong to their owners; data from ${al}.`
-    : `© ${y} ${esc(OWNER)}. جميع الحقوق محفوظة للموقع. أسماء الأنمي وصوره وبياناته لأصحابها، والبيانات من ${al}.`;
+    ? `© ${y} ${esc(OWNER)}. All rights reserved for the site.<br>Anime data and images provided by ${al}; titles and artwork belong to their respective owners.`
+    : `© ${y} ${esc(OWNER)}. جميع الحقوق محفوظة للموقع.<br>بيانات الأنمي وصوره مقدّمة من ${al}، وأسماء الأعمال وصورها لأصحابها.`;
 }
 
 function applyLang() {
