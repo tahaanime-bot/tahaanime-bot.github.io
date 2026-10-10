@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>موقع الأنمي</title>
+<title>Animora</title>
+<meta name="description" content="Animora - Discover and track anime / اكتشف الأنمي وتابع حلقاته">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<!-- بدّل YOUR-DOMAIN بعنوان موقعك الفعلي في og:url وog:image وفي سطر url داخل JSON-LD -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Animora">
+<meta property="og:title" content="Animora">
+<meta property="og:description" content="اكتشف الأنمي وتابع حلقاته - Discover and track anime">
+<meta property="og:url" content="https://YOUR-DOMAIN/">
+<meta property="og:image" content="https://YOUR-DOMAIN/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Animora","alternateName":["أنيمورا"],"url":"https://YOUR-DOMAIN/"}</script>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#12050f;--card:rgba(255,255,255,.07);--line:rgba(255,255,255,.12);--text:#f1ecf4;--mute:#a79bb3;--accent:#e5103f}
@@ -303,7 +315,7 @@ async function player(id, n) {
 const OWNER = "محمد طه براجح (Mohamed Tah Berrajeh)"; // يظهر في حقوق النشر أسفل الموقع
 let lang = LS.get("al:lang", "ar");
 const DICT = {
-  "موقع الأنمي":"Anime Site","الرئيسية":"Home","قائمتي":"My List","الأنواع":"Genres","المزيد":"More",
+  "الرئيسية":"Home","قائمتي":"My List","الأنواع":"Genres","المزيد":"More",
   "ابحث عن أنمي...":"Search anime...","اكتب رقم الحلقة":"Episode number","اذهب":"Go",
   "آخر المشاهدات":"Continue watching","الإصدارات الحديثة":"New releases","الأنواع الشائعة":"Popular genres",
   "الرائج هذا الموسم":"Trending this season","الأكثر رواجاً":"Most popular","الأنمي الأكثر إعجاباً":"Most liked anime",
@@ -348,7 +360,7 @@ const PAGES = {
 function renderChrome() {
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === "en" ? "ltr" : "rtl";
-  document.getElementById("brand").textContent = tr("موقع الأنمي");
+  document.getElementById("brand").textContent = "Animora";
   document.getElementById("q").placeholder = tr("ابحث عن أنمي...");
   document.getElementById("nav").innerHTML = [["home","#/","🏠","الرئيسية"],["list","#/list","🔖","قائمتي"],["genres","#/genres","📚","الأنواع"],["more","#/more","⚙️","المزيد"]]
     .map(([r, h, i, n]) => `<a href="${h}" data-r="${r}"><span>${i}</span>${tr(n)}</a>`).join("");
